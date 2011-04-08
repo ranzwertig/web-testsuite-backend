@@ -2,9 +2,16 @@ web-testsuite-backend
 =====================
 
 This is a backend http server to collect results of the web-testsuite (https://github.com/vf/web-testsuite) written in node.js.
+This project is in a very early state of development. If there are any questions, design issues or bugs, file them on github or
+contact me (info@browserlove.org, @browserlove or @ranzwertig).
 
-How to install
---------------
+Requirements
+------------
+
+- Node 0.4+
+
+How to install and run
+----------------------
 
 1. Download and compile nodejs (http://nodejs.org/).
 2. Clone or Download the web-testsuite-backend source from Github.
@@ -30,10 +37,10 @@ Modules
 The web-testsuite-backend is designed to support multiple modules where the requests are processed. All modules are stored in the *modules* folder. 
 To enable a module, just go to the *config.js* File and add the module to the following section:
 
-        exports.modulesEnabled = [
-            'toFile',
-            'toMongo'
-        ];
+    exports.modulesEnabled = [
+        'toFile',
+        'toMongo'
+    ];
 
 The request handlers inside the modules are called in the order they are enabled. 
 
@@ -51,10 +58,10 @@ A module for example looks like:
 
 In this example a handler for *GET* and *POST* requests is defined. Possible handlers are:
 
-        exports.onget = function(request, response) { ...; response.end(); };
-        exports.onpost = function(request, response) { ...; response.end(); };
-        exports.onput = function(request, response) { ...; response.end(); };
-        exports.ondelete = function(request, response) { ...; response.end(); };
+    exports.onget = function(request, response) { ...; response.end(); };
+    exports.onpost = function(request, response) { ...; response.end(); };
+    exports.onput = function(request, response) { ...; response.end(); };
+    exports.ondelete = function(request, response) { ...; response.end(); };
 
 When the function *response.end()* is called inside a module request handler, the response isn't ended!
 It just sends a signal to the backend which ends the response after all modules finished.
@@ -62,6 +69,15 @@ So it is necessary to call *response.end()* inside a module after all the proces
 
 **If you really need to end the response inside a module handler use *response.seriouslyEnd()*. But be
 careful with this, the following modules might fail!!!**
+
+Todos
+-----
+
+- handle exceptions!!!
+- implement the toFile module
+- ...
+
+any suggestions? Please contact me ... (info@browserlove.org, @browserlove or @ranzwertig)
 
 
 

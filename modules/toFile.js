@@ -1,5 +1,4 @@
 exports.onpost = function(req, res){
-    console.log('post');
     res.end();
 };
 

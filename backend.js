@@ -25,7 +25,7 @@ backend.on('get',function(req, res){
     res.end = function(){
         barrier.commit();
     };
-    for(var i = 0; i < mods.length; i += 1) {
+    for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
         if (typeof mod.onget === 'function'){
             //  id the module has a handler for this http method
@@ -47,7 +47,7 @@ backend.on('post',function(req, res){
     res.end = function(){
         barrier.commit();
     };
-    for(var i = 0; i < mods.length; i += 1) {
+    for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
         if (typeof mod.onpost === 'function'){
             mod.onpost(req, res);
@@ -66,7 +66,7 @@ backend.on('put',function(req, res){
     res.end = function(){
         barrier.commit();
     };
-    for(var i = 0; i < mods.length; i += 1) {
+    for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
         if (typeof mod.onput === 'function'){
             mod.onput(req, res);
@@ -85,7 +85,7 @@ backend.on('delete',function(req, res){
     res.end = function(){
         barrier.commit();
     };
-    for(var i = 0; i < mods.length; i += 1) {
+    for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
         if (typeof mod.ondelete === 'function'){
             mod.ondelete(req, res);
