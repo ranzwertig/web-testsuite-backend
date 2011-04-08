@@ -51,10 +51,10 @@ A module for example looks like:
 
 In this example a handler for *GET* and *POST* requests is defined. Possible handlers are:
 
-exports.onget = function(request, response) { ...; response.end(); };
-exports.onpost = function(request, response) { ...; response.end(); };
-exports.onput = function(request, response) { ...; response.end(); };
-exports.ondelete = function(request, response) { ...; response.end(); };
+        exports.onget = function(request, response) { ...; response.end(); };
+        exports.onpost = function(request, response) { ...; response.end(); };
+        exports.onput = function(request, response) { ...; response.end(); };
+        exports.ondelete = function(request, response) { ...; response.end(); };
 
 When the function *response.end()* is called inside a module request handler, the response isn't ended!
 It just sends a signal to the backend which ends the response after all modules finished.
