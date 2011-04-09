@@ -12,7 +12,8 @@ var config = {
 
 // Do NOT touch anything below this!!!
 var fs = require('fs'),
-    util = require('util');
+    util = require('util'),
+    url = require('url');
 
 // the post request handler
 exports.onpost = function(req, res){
@@ -45,7 +46,7 @@ exports.onpost = function(req, res){
         
         res.writeHead(200, {'Content-Type': 'application/json'});
         // build response object
-        var resonseJson = {
+        var responseJson = {
             status: 200,
             error: false,
             message: 'OK',
@@ -54,14 +55,37 @@ exports.onpost = function(req, res){
         };
         
         // send response data
-        res.write(JSON.stringify(resonseJson));
+        res.write(JSON.stringify(responseJson));
         // send signal module finished
         res.end();
     });
 };
 
 exports.onget = function(req, res){
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write('Hello World\n');
-    res.end();
+    var reqUrl = url.parse(req.url);
+    if (reqUrl.pathname === '/results/all' || reqUrl.pathname === '/results/all/'){
+        fs.readdir(config.outputPath, function(err, files){
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            if (!err){
+                var responseJson = {
+                    status: 200,
+                    error: false,
+                    message: 'OK',
+                    action: 'get /results/all/',
+                    files: files
+                };
+            }
+            else{
+                var responseJson = {
+                    status: 500,
+                    error: true,
+                    message: 'ERROR',
+                    action: 'get /results/all/',
+                    files: []
+                };
+            }
+            res.write(JSON.stringify(responseJson));
+            res.end();
+        });
+    }
 };
