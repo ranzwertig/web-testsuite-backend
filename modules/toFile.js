@@ -1,14 +1,34 @@
+/**
+ * The module toFile listens for POST data and saves it to a File. It will
+ * return a JSON Object containing some information about the request and success
+ * and the name of the added file.
+ * By performing a GET request to /results/?file=list you will get a JSON Object
+ * containing some information about the request and a list of all files posted
+ * before.
+ * A GET request to /results/?file=[filename] returns the selected file.
+ * 
+ * To configure this module please change the config section below.
+ * 
+ * @version 0.0.3
+ * @author Christian Ranz
+ * @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
+ */
+
 // config section
 var config = {
     // define the Path where the logs should be saved
     // e.g. '.', '../foo', '/var/log'
     outputPath: '.',
     
-    // Mocrotime: %microtime%
+    // Microtime: %microtime%
     // Date UTC String: %dateUTC%
     // feel free to add more
     fileName: 'log-%microtime%-%dateUTC%.json'
 };
+// config section end
+
+
+
 
 // Do NOT touch anything below this!!!
 var fs = require('fs'),
@@ -66,6 +86,7 @@ exports.onpost = function(req, res){
             res.end();
         });
     }
+    // default route
     else {
         res.end();
     }
@@ -73,7 +94,9 @@ exports.onpost = function(req, res){
 
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
+    // handle request to list files
     if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file === 'list'){
+        // open output dir and list files
         fs.readdir(config.outputPath, function(err, files){
             if(!err){
                 res.writeHead(200, {'Content-Type': 'application/json'});
@@ -99,7 +122,9 @@ exports.onget = function(req, res){
             res.end();
         });
     }
+    // handle single file request
     else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file !== 'list'){
+        // check if file exists
         fs.stat(config.outputPath+'/'+reqUrl.query.file, function(err, stat){
             if(err){
                 res.writeHead(404);
@@ -107,6 +132,7 @@ exports.onget = function(req, res){
                 return;
             }
         });
+        // return the file content
         var readStream = fs.createReadStream(config.outputPath+'/'+reqUrl.query.file);
         util.pump(readStream, res, function(){
             res.writeHead(500);    
@@ -118,6 +144,7 @@ exports.onget = function(req, res){
             res.end();
         });
     }
+    // default route
     else{
         res.end();
     }
