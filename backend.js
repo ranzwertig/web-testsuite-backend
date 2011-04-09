@@ -27,12 +27,12 @@ backend.on('get',function(req, res){
     };
     for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
-        if (typeof mod.onget === 'function'){
+        if(typeof mod.onget === 'function'){
             //  id the module has a handler for this http method
             //  call the handler with the modified response object
             mod.onget(req, res);
         }
-        else {
+        else{
             //  if there is no handler commit and skip this module
             barrier.commit();
         }
@@ -49,10 +49,10 @@ backend.on('post',function(req, res){
     };
     for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
-        if (typeof mod.onpost === 'function'){
+        if(typeof mod.onpost === 'function'){
             mod.onpost(req, res);
         }
-        else {
+        else{
             barrier.commit();
         }
     }
@@ -68,10 +68,10 @@ backend.on('put',function(req, res){
     };
     for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
-        if (typeof mod.onput === 'function'){
+        if(typeof mod.onput === 'function'){
             mod.onput(req, res);
         }
-        else {
+        else{
             barrier.commit();
         }
     }
@@ -87,10 +87,10 @@ backend.on('delete',function(req, res){
     };
     for(var i = 0; i < mods.length; i += 1){
         var mod = mods[i];
-        if (typeof mod.ondelete === 'function'){
+        if(typeof mod.ondelete === 'function'){
             mod.ondelete(req, res);
         }
-        else {
+        else{
             barrier.commit();
         }
     }

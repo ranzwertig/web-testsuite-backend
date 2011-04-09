@@ -24,6 +24,8 @@ exports.onpost = function(req, res){
     fileName = fileName.replace(/%dateUTC%/g, dateUTC);
     fileName = fileName.replace(/ /g, '_');
     fileName = fileName.replace(/\//g, '');
+    fileName = fileName.replace(/,/g, '');
+    fileName = fileName.replace(/:/g, '-');
     
     // init output stream
     var outputStream = fs.createWriteStream(
@@ -62,16 +64,16 @@ exports.onpost = function(req, res){
 };
 
 exports.onget = function(req, res){
-    var reqUrl = url.parse(req.url);
-    if (reqUrl.pathname === '/results/all' || reqUrl.pathname === '/results/all/'){
+    var reqUrl = url.parse(req.url, true);
+    if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file === 'list'){
         fs.readdir(config.outputPath, function(err, files){
             res.writeHead(200, {'Content-Type': 'application/json'});
-            if (!err){
+            if(!err){
                 var responseJson = {
                     status: 200,
                     error: false,
                     message: 'OK',
-                    action: 'get /results/all/',
+                    action: 'GET /results/?file=list',
                     files: files
                 };
             }
@@ -80,12 +82,23 @@ exports.onget = function(req, res){
                     status: 500,
                     error: true,
                     message: 'ERROR',
-                    action: 'get /results/all/',
+                    action: 'GET /results/?file=list',
                     files: []
                 };
             }
             res.write(JSON.stringify(responseJson));
             res.end();
         });
+    }
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file !== 'list'){
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        var readStream = fs.createReadStream(config.outputPath+'/'+reqUrl.query.file);
+        util.pump(readStream, res);
+        readStream.on('end', function(){
+            res.end();
+        });
+    }
+    else{
+        res.end();
     }
 };
