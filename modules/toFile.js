@@ -26,7 +26,7 @@ exports.onpost = function(req, res){
     
     // init output stream
     var outputStream = fs.createWriteStream(
-        outputPath+'/'+fileName,
+        config.outputPath+'/'+fileName,
         { 
             flags: 'w',
             encoding: null,
