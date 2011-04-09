@@ -74,7 +74,8 @@ Todos
 -----
 
 - handle exceptions!!!
-- implement the toFile module
+- secure toFile module
+- make backend.js configurable by commandline args
 - ...
 
 any suggestions? Please contact me ... (info@browserlove.org, @browserlove or @ranzwertig)
