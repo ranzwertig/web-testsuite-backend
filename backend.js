@@ -2,7 +2,20 @@ var http = require('http'),
     server = require('./lib/httpserver'),
     config = require('./config'),
     Barrier = require('./lib/barrier').Barrier;
+    
+//  get argiments from comman line
+process.argv.forEach(function (val, index, array) {
+    if((/port=/).test(val)){
+        val = val.split('=');
+        config.httpSettings.port = val[1];
+    }
+    else if((/host=/).test(val)){
+        val = val.split('=');
+        config.httpSettings.host = val[1];
+    }
+});
 
+//  start the http server
 var backend = new server.HttpServer(config.httpSettings);
 
 //  load all enabled modules

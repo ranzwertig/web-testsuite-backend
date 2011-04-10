@@ -9,7 +9,7 @@
  * 
  * To configure this module please change the config section below.
  * 
- * @version 0.0.3
+ * @version 0.3.1
  * @author Christian Ranz
  * @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
  */
@@ -124,8 +124,9 @@ exports.onget = function(req, res){
     }
     // handle single file request
     else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file !== 'list'){
+        var file = reqUrl.query.file.replace(/\//g, '');
         // check if file exists
-        fs.stat(config.outputPath+'/'+reqUrl.query.file, function(err, stat){
+        fs.stat(config.outputPath+'/'+file, function(err, stat){
             if(err){
                 res.writeHead(404);
                 res.end();
@@ -133,7 +134,7 @@ exports.onget = function(req, res){
             }
         });
         // return the file content
-        var readStream = fs.createReadStream(config.outputPath+'/'+reqUrl.query.file);
+        var readStream = fs.createReadStream(config.outputPath+'/'+file);
         util.pump(readStream, res, function(){
             res.writeHead(500);    
             res.end();
