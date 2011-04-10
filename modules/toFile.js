@@ -9,7 +9,7 @@
  * 
  * To configure this module please change the config section below.
  * 
- * @version 0.3.1
+ * @version 0.3.2
  * @author Christian Ranz
  * @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
  */
@@ -18,7 +18,7 @@
 var config = {
     // define the Path where the logs should be saved
     // e.g. '.', '../foo', '/var/log'
-    outputPath: '.',
+    outputPath: './output',
     
     // Microtime: %microtime%
     // Date UTC String: %dateUTC%
@@ -70,7 +70,7 @@ exports.onpost = function(req, res){
         req.on('end', function(){
             outputStream.end();
             
-            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
             // build response object
             var responseJson = {
                 status: 200,
@@ -99,7 +99,7 @@ exports.onget = function(req, res){
         // open output dir and list files
         fs.readdir(config.outputPath, function(err, files){
             if(!err){
-                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
                 var responseJson = {
                     status: 200,
                     error: false,
@@ -109,7 +109,7 @@ exports.onget = function(req, res){
                 };
             }
             else{
-                res.writeHead(500, {'Content-Type': 'application/json'})
+                res.writeHead(500, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
                 var responseJson = {
                     status: 500,
                     error: true,
@@ -123,9 +123,9 @@ exports.onget = function(req, res){
         });
     }
     // handle single file request
-    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.file !== 'list'){
-        var file = reqUrl.query.file.replace(/\//g, '');
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.file !== 'undefined' && reqUrl.query.file !== 'list'){
         // check if file exists
+        var file = reqUrl.query.file.replace(/\//g, '');
         fs.stat(config.outputPath+'/'+file, function(err, stat){
             if(err){
                 res.writeHead(404);
@@ -141,7 +141,7 @@ exports.onget = function(req, res){
             return;
         });
         readStream.on('end', function(){
-            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
             res.end();
         });
     }
