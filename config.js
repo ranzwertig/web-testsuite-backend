@@ -1,6 +1,5 @@
 exports.modulesEnabled = [
      'toFile'
-//    ,'toMongo'
 ];
 
 exports.httpSettings = {

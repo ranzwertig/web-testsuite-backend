@@ -8,7 +8,7 @@ contact me (info@browserlove.org, @browserlove or @ranzwertig).
 Requirements
 ------------
 
-- Node 0.4+
+- Node 0.4+ (tested with node 0.4.5)
 
 How to install and run
 ----------------------
@@ -18,7 +18,7 @@ How to install and run
 3. Modify the config.js file.
 4. do sth, like 
 
-        $ node backend.js
+    $ node backend.js
 
 Configuration
 -------------
@@ -26,20 +26,28 @@ Configuration
 Modify the config.js file to set the port and host you server should run.
 Therefore edit following section:
 
-        exports.httpSettings = {
-            port: 8080,
-            host: '127.0.0.1'
-        };
+    exports.httpSettings = {
+        port: 8080,
+        host: '127.0.0.1'
+    };
+
+If you like to run more instances of the backend.js server you are able to 
+configure the server using command line arguments. Just do sth. like:
+
+    $ node backend.js host=127.0.0.1 port=8080
+
+The command line args will overwrite the configuration defined in the config.js.
 
 Modules
 -------
 
-The web-testsuite-backend is designed to support multiple modules where the requests are processed. All modules are stored in the *modules* folder. 
-To enable a module, just go to the *config.js* File and add the module to the following section:
+The web-testsuite-backend is designed to support multiple modules where the requests are processed. 
+All modules are stored in the *modules* folder. To enable a module, just go to the *config.js* 
+File and add the module to the following section:
 
     exports.modulesEnabled = [
-        'toFile',
-        'toMongo'
+        'toFile'
+       ,'toMongo'
     ];
 
 The request handlers inside the modules are called in the order they are enabled. 
@@ -74,11 +82,9 @@ Todos
 -----
 
 - handle exceptions!!!
-- secure toFile module
-- make backend.js configurable by commandline args
 - ...
 
-any suggestions? Please contact me ... (info@browserlove.org, @browserlove or @ranzwertig)
+any suggestions? Please contact me ... (info@browserlove.org, @browserlove or @ranzwertig) ok file an issue.
 
 
 
