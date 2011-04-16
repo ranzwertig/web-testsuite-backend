@@ -1,17 +1,18 @@
 /**
- * The module toFile listens for POST data and saves it to a File. It will
- * return a JSON Object containing some information about the request and success
- * and the name of the added file.
- * By performing a GET request to /results/?file=list you will get a JSON Object
- * containing some information about the request and a list of all files posted
- * before.
- * A GET request to /results/?file=[filename] returns the selected file.
+ *  The module toFile listens for POST data and saves it to a File. It will
+ *  return a JSON Object containing some information about the request and success
+ *  and the name of the added file.
+ *  By performing a GET request to /results/?file=list you will get a JSON Object
+ *  containing some information about the request and a list of all files posted
+ *  before.
+ *  A GET request to /results/?file=[filename] returns the selected file.
  * 
- * To configure this module please change the config section below.
+ *  To configure this module please change the config section below.
  * 
- * @version 0.3.2
- * @author Christian Ranz
- * @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
+ *  @version 0.3.2
+ *  @author Christian Ranz
+ *  @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
+ *  @license MIT
  */
 
 // config section

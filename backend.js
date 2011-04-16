@@ -1,9 +1,18 @@
+/**
+ *  backend.js is a lightweight http server to collect the results of the 
+ *  web-testsuite (https://github.com/vf/web-testsuite) and proceed them.
+ * 
+ *  @author Christian Ranz
+ *  @license MIT
+ *  @version 0.2.1
+ */
+
 var http = require('http'),
     server = require('./lib/httpserver'),
     config = require('./config'),
     Barrier = require('./lib/barrier').Barrier;
     
-//  get argiments from comman line
+//  get arguments from comman line
 process.argv.forEach(function (val, index, array) {
     if((/port=/).test(val)){
         val = val.split('=');
