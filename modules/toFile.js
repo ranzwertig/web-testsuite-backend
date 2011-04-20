@@ -38,6 +38,7 @@ var fs = require('fs'),
 
 // the post request handler
 exports.onpost = function(req, res){
+    console.log('post');
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
         var microtime = new Date().getTime(),

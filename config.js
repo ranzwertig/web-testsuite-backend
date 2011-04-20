@@ -6,7 +6,8 @@
  *  The modules are executed in the same order they are defined.
  */
 exports.modulesEnabled = [
-     'toFile'
+     'toMysql'
+    //,'toFile'
 ];
 
 /**
