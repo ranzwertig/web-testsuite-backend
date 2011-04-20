@@ -19,7 +19,8 @@ var config = {
 };
 // end config section
 
-var Db = require('mongodb').Db;
+var Db = require('mongodb').Db,
+    Server = require('mongodb').Server;
 
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
