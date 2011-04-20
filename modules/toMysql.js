@@ -57,7 +57,7 @@ db.connect();
 exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
-        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         var data = '';
         req.on('data',function(chunk){
             data += chunk.toString();
