@@ -44,8 +44,7 @@ exports.onpost = function(req, res){
 
             var cleanInfo = {};
             for(var key in info){
-                if(info.hasOwnProperty(key))
-                    cleanInfo[key.replace(/./g,'_')] = info[key];
+                cleanInfo[key.replace(/\./g,'_')] = info[key];
             }
             console.log(cleanInfo);
             
