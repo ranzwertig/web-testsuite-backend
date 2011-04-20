@@ -90,7 +90,7 @@ exports.onpost = function(req, res){
                                 action: 'post'
                             }));
                             res.end();
-                            db.close();
+                            //db.close();
                         }
                     });     
                 }
