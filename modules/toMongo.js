@@ -41,12 +41,14 @@ exports.onpost = function(req, res){
                 testsRaw = theData.test_data,
                 info = JSON.parse(infoRaw),
                 tests = JSON.parse(testsRaw);
-
-            var cleanInfo = {};
+            
+            var cleanInfo = {}; 
             for(var key in info){
-                cleanInfo[key.replace(/\./g,'_')] = info[key];
+                if(info.hasOwnProperty(key)){ 
+                    var tkey = key.replace(/\./g,'-'); 
+                    cleanInfo[tkey] = info[key]; 
+                } 
             }
-            console.log(cleanInfo);
             
             db.open(function(error, db){
                 if(error){
@@ -78,7 +80,48 @@ exports.onpost = function(req, res){
                         else{
                             collection.insert({
                                 created: new Date(),
-                                useragent: info['window.navigator.userAgent'],
+                                info: cleanInfo,
+                                /*windowHTMLAudioElement: info['window.HTMLAudioElement'],
+                                windowHTMLCanvasElement: info['window.HTMLCanvasElement'],
+                                windowHTMLMediaElement: info['window.HTMLMediaElement'],
+                                windowHTMLMeterElement: info['window.HTMLMeterElement'],
+                                windowHTMLVideoElement: info['window.HTMLVideoElement'],
+                                windowJSONparse: info['window.JSON.parse'],
+                                window.JSON.stringify: info[''],
+                                window.NodeList: info[''],
+                                window.SVGDocument: info[''],
+                                window.WebGLRenderingContext: info[''],
+                                window.Worker: info[''],
+                                window.applicationCache: info[''],
+                                window.localStorage: info[''],
+                                window.navigator.appCodeName: info[''],
+                                window.navigator.appMinorVersio: info[''],
+                                window.navigator.appName: info[''],
+                                window.navigator.appVersion: info[''],
+                                window.navigator.cookieEnabled: info[''],
+                                window.navigator.geolocation: info[''],
+                                indow.navigator.getStorageUpdates: info[''],
+                                window.navigator.javaEnabled: info[''],
+                                window.navigator.language: info[''],
+                                window.navigator.mimeTypes: info[''],
+                                window.navigator.onLine: info[''],
+                                window.navigator.platform: info[''],
+                                window.navigator.plugins: info[''],
+                                window.navigator.product: info[''],
+                                window.navigator.productSub: info[''],
+                                window.navigator.taintEnabled: info[''],
+                                window.navigator.userAgent: info[''],
+                                window.navigator.userLanguage: info[''],
+                                window.navigator.vendor: info[''],
+                                window.navigator.vendorSub: info[''],
+                                window.screen.availHeight: info[''],
+                                window.screen.availLeft: info[''],
+                                window.screen.availTop: info[''],
+                                window.screen.availWidth: info[''],
+                                window.screen.height: info[''],
+                                window.screen.left: info[''],
+                                window.screen.top: info[''],
+                                window.screen.width: info[''],     */                           
                                 tests: tests
                             });
                             collection.count(function(err, count) {
