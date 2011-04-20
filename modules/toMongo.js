@@ -70,5 +70,6 @@ exports.onpost = function(req,res){
 };
 
 exports.onpost = function(req,res){
+    res.write('hello');
     res.end();
 };
