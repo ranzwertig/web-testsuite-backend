@@ -64,7 +64,9 @@ exports.onpost = function(req, res){
                     return;
                 }
                 else{
+                    console.log('no err');
                     db.collection(config.collection, function(err, collection){
+                        console.log('collection');
                         collection.insert(result);
                         db.close();
                     });     
