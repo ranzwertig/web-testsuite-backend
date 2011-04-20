@@ -51,11 +51,11 @@ exports.onpost = function(req,res){
                 else{
                     db.collection(config.collection, function(err, collection){
                         collection.insert(result);
-                        res.end();
                     });
                     db.close();
                 }
             });
+            res.end();
         });
     }
     else{
