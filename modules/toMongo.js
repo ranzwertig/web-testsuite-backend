@@ -67,17 +67,19 @@ exports.onpost = function(req, res){
                     console.log('no err');
                     db.collection(config.collection, function(err, collection){
                         console.log('collection');
-                        collection.insert(result);
-                        db.close();
+                        collection.insert(result,function(){
+                            console.log('insert');
+                            res.write(JSON.stringify({
+                                status: 200,
+                                error: false,
+                                message: 'OK',
+                                action: 'post'
+                            }));
+                            res.end();
+                            db.close();
+                        });
                     });     
                 }
-                res.write(JSON.stringify({
-                    status: 200,
-                    error: false,
-                    message: 'OK',
-                    action: 'post'
-                }));
-                res.end();
             });
         });
     }
