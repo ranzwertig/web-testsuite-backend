@@ -29,7 +29,7 @@ var url = require('url'),
 // please do NOT edit anything below here
 exports.onpost = function(req, res){
     res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-    res.write('hello');
+    res.write(JSON.stringify({test:'hello'}));
     res.end();
     /*var reqUrl = url.parse(req.url, true);
     console.log('post');
