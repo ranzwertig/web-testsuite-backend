@@ -75,11 +75,12 @@ exports.onpost = function(req, res){
                         }
                         else{
                             console.log('collection');
-                            collection.insert({
+                            collection.insert({hallo:'hallo'});
+                            /*collection.insert({
                                 created: new Date(),
                                 info: info,
                                 tests: tests
-                            });
+                            });*/
                             collection.count(function(err, count) {
                                 console.log(count);
                             });
