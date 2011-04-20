@@ -21,20 +21,16 @@ var config = {
 
 var url = require('url'),
     qs = require('querystring');
-//    Db = require('mongodb').Db,
-//    Server = require('mongodb').Server;
+    Db = require('mongodb').Db,
+    Server = require('mongodb').Server;
 
-//var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
+var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
 // please do NOT edit anything below here
-exports.onpost = function(req, res){
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(JSON.stringify({test:'hello'}));
-    res.end();
-    /*var reqUrl = url.parse(req.url, true);
+    var reqUrl = url.parse(req.url, true);
     console.log('post');
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
-        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         var data = '';
         req.on('data',function(chunk){
             data += chunk.toString();
@@ -101,9 +97,9 @@ exports.onpost = function(req, res){
         });
     }
     else{
-        res.writeHead(404);
+        res.writeHead(404, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         res.end();
-    }*/
+    }
 };
 
 exports.onget = function(req,res){
