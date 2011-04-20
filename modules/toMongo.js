@@ -42,6 +42,13 @@ exports.onpost = function(req, res){
                 info = JSON.parse(infoRaw),
                 tests = JSON.parse(testsRaw);
 
+            var cleanInfo = {};
+            for(var key in info){
+                if(info.hasOwnProperty(key))
+                    cleanInfo[key.replace(/./g,'_')] = info[key];
+            }
+            console.log(cleanInfo);
+            
             db.open(function(error, db){
                 if(error){
                     console.log(error);
@@ -51,7 +58,7 @@ exports.onpost = function(req, res){
                         message: error,
                         action: 'post'
                     }));
-                    res.seriouslyEnd();
+                    res.end();
                     db.close();
                     return;
                 }
@@ -65,7 +72,7 @@ exports.onpost = function(req, res){
                                 message: error,
                                 action: 'post'
                             }));
-                            res.seriouslyEnd();
+                            res.end();
                             db.close();
                             return;
                         }
@@ -73,8 +80,7 @@ exports.onpost = function(req, res){
                             collection.insert({
                                 created: new Date(),
                                 useragent: info['window.navigator.userAgent'],
-                                tests: 'foobar',
-                                'window.navigator.userAgent' : 'lala'
+                                tests: tests
                             });
                             collection.count(function(err, count) {
                                 console.log(count);
