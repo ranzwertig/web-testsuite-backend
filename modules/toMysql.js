@@ -59,9 +59,7 @@ exports.onpost = function(req, res){
                 tests = JSON.parse(testsRaw);
                 
             var userAgent = info['window.navigator.userAgent'];
-            db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ('faaf', 'affa', '"+userAgent+"');",function(err,results,fields){
-                console.log(err);
-            });
+            db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ( ? , ? , ? );",[infoRaw, testsRaw, userAgent]);
         });
     }
     else{
