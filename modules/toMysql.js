@@ -51,7 +51,6 @@ exports.onpost = function(req, res){
             data += chunk.toString();
         });
         req.on('end',function(){
-            console.log('post');
             var theData = qs.parse(data),
                 infoRaw = theData.info,
                 testsRaw = theData.test_data,
@@ -59,17 +58,37 @@ exports.onpost = function(req, res){
                 tests = JSON.parse(testsRaw);
                 
             var userAgent = info['window.navigator.userAgent'];
-            db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ( ? , ? , ? );",[infoRaw, testsRaw, userAgent]);
+            db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ( ? , ? , ? );",[infoRaw, testsRaw, userAgent],function(error,results,fields){
+                if(error){
+                    console.log(error);
+                    res.write(JSON.stringify({
+                        status: 200,
+                        error: false,
+                        message: err,
+                        action: 'post',
+                    }));
+                }
+                else {
+                    console.log(results);
+                    res.write(JSON.stringify({
+                        status: 200,
+                        error: false,
+                        message: 'OK',
+                        action: 'post',
+                        generatedfile: fileName
+                    })); 
+                }
+                res.end();
+            });
         });
     }
     else{
-        res.writeHead(404, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+        res.writeHead(404);
         res.end();
     }
 };
 
 exports.onget = function(req, res){
-    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     console.log('dpp');
     res.write('hello');
     res.end();
