@@ -75,7 +75,7 @@ exports.onpost = function(req, res){
                         }
                         else{
                             console.log('collection');
-                            collection.insert({hallo:'hallo'});
+                            collection.insert(info);
                             /*collection.insert({
                                 created: new Date(),
                                 info: info,
