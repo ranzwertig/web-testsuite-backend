@@ -59,6 +59,8 @@ exports.onpost = function(req, res){
                         message: err,
                         action: 'post'
                     }));
+                    res.seriouslyEnd();
+                    return;
                 }
                 else{
                     db.collection(config.collection, function(err, collection){
@@ -66,8 +68,14 @@ exports.onpost = function(req, res){
                     });
                     db.close();
                 }
+                res.write(JSON.stringify({
+                    status: 200,
+                    error: false,
+                    message: 'OK',
+                    action: 'post'
+                }));
+                res.end();
             });
-            res.end();
         });
     }
     else{
