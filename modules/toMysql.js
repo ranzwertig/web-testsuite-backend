@@ -4,9 +4,18 @@
  *  After posting a result to [host]/results/ it will return a JSON object 
  *  containing the id of the inserted result.
  * 
+ *  You can retrieve a list of all results by performing a request like
+ *  GET /results/?result=list
+ *  This list can be filtered using query parameters like
+ *  since=[YYYY-mm-dd hh:MM:ss] // list all results since this timestamp (including)
+ *  max=[\d*]                   // list [\d*] results 
+ *  offset=[\d*]                // list results ignoring the first [\d*] results
+ *  or select a single result 
+ *  /results/?result=[id]       // fetch the result with the id [id]
+ * 
  *  @dependencie https://github.com/felixge/node-mysql
  * 
- *  @version 0.0.3
+ *  @version 0.0.4
  *  @author Christian Ranz
  *  @licence MIT
  * 
@@ -48,7 +57,7 @@ db.connect();
 exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
-        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+        res.writeHead(200, {'Content-Type': 'application/json'});
         var data = '';
         req.on('data',function(chunk){
             data += chunk.toString();
