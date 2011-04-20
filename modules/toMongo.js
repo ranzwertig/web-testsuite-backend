@@ -73,7 +73,8 @@ exports.onpost = function(req, res){
                             collection.insert({
                                 created: new Date(),
                                 useragent: info['window.navigator.userAgent'],
-                                tests: 'foobar'
+                                tests: 'foobar',
+                                'window.navigator.userAgent' : 'lala'
                             });
                             collection.count(function(err, count) {
                                 console.log(count);
