@@ -19,13 +19,17 @@ var config = {
 };
 // end config section
 
-var Db = require('mongodb').Db,
+var url = require('url'),
+    qs = require('querystring'),
+    Db = require('mongodb').Db,
     Server = require('mongodb').Server;
 
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
 // please do NOT edit anything below here
 exports.onpost = function(req,res){
+    var reqUrl = url.parse(req.url, true);
+    console.log('post');
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
         res.writeHead(200, {'Content-Type': 'application/json'});
         var data = '';
@@ -33,6 +37,7 @@ exports.onpost = function(req,res){
             data += chunk.toString();
         });
         req.on('end',function(){
+            console.log('data');
             var theData = qs.parse(data),
                 infoRaw = theData.info,
                 testsRaw = theData.test_data,
