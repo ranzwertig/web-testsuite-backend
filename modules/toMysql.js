@@ -120,6 +120,7 @@ exports.onget = function(req, res){
                 res.writeHead(500);
             }
             else{
+                res.writeHead(200, {'Content-Type': 'application/json'});
                 res.write(JSON.stringify(results));
             }
             res.end();
@@ -132,6 +133,7 @@ exports.onget = function(req, res){
                 res.writeHead(500);
             }
             else{
+                res.writeHead(200, {'Content-Type': 'application/json'});
                 res.write(JSON.stringify(results));
             }
             res.end();
