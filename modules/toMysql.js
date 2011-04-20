@@ -93,9 +93,17 @@ exports.onpost = function(req, res){
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
-        var query = "SELECT id, useragent FROM "+config.TABLE_NAME;
+        var query = "SELECT id FROM "+config.TABLE_NAME;
         if(typeof reqUrl.query.since !== 'undefined' && /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(reqUrl.query.since)){
             query += " WHERE created >= '"+reqUrl.query.since+"'";
+        }
+        if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max)){
+            if(typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
+                query += " LIMIT "+reqUrl.query.offset+", "+reqUrl.query.max;
+            }
+            else{
+                query += " LIMIT "+reqUrl.query.max;
+            }
         }
         var listQuery = db.query(query,function(error,results,fields){
             if(error){
