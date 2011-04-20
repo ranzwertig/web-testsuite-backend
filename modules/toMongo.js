@@ -60,13 +60,14 @@ exports.onpost = function(req, res){
                         action: 'post'
                     }));
                     res.seriouslyEnd();
+                    db.close();
                     return;
                 }
                 else{
                     db.collection(config.collection, function(err, collection){
                         collection.insert(result);
-                    });
-                    db.close();
+                        db.close();
+                    });     
                 }
                 res.write(JSON.stringify({
                     status: 200,
