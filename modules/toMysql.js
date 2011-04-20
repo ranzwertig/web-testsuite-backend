@@ -1,11 +1,12 @@
 /**
- *  Collect data from the web-testsuite and store it inside a mysql database.
+ *  Collect data from the web-testsuite and stores it inside a mysql database.
  * 
- *  @dependencies
- *  https://github.com/felixge/node-mysql
- *  npm install mysql
+ *  After posting a result to [host]/results/ it will return a JSON object 
+ *  containing the id of the inserted result.
  * 
- *  @version 0.0.1
+ *  @dependencie https://github.com/felixge/node-mysql
+ * 
+ *  @version 0.0.3
  *  @author Christian Ranz
  *  @licence MIT
  * 
@@ -24,6 +25,7 @@
  
  */
  
+//  config section
 var config = {
     database: 'results',
     user: 'root',
@@ -33,10 +35,11 @@ var config = {
     debug:  false,
     TABLE_NAME: 'results'
 };
+//  end of config section
 
-
+//  please do NOT edit anything below here
 var url = require('url'),
-    qs = require('querystring');
+    qs = require('querystring'),
     Client = require("mysql").Client,
     db = new Client(config);
 
@@ -62,14 +65,13 @@ exports.onpost = function(req, res){
                 if(error){
                     console.log(error);
                     res.write(JSON.stringify({
-                        status: 200,
+                        status: 500,
                         error: false,
                         message: err,
                         action: 'post'
                     }));
                 }
                 else {
-                    console.log(results);
                     res.write(JSON.stringify({
                         status: 200,
                         error: false,
@@ -89,7 +91,6 @@ exports.onpost = function(req, res){
 };
 
 exports.onget = function(req, res){
-    console.log('dpp');
-    res.write('hello');
+    res.writeHead(404);
     res.end();
 };
