@@ -91,6 +91,23 @@ exports.onpost = function(req, res){
 };
 
 exports.onget = function(req, res){
-    res.writeHead(404);
-    res.end();
+    var reqUrl = url.parse(req.url, true);
+    if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
+        var listQuery = db.query("SELECT id, useragent FROM "+config.TABLE_NAME,function(error,results,fields){
+            if(error){
+                console.log(error);
+                res.writeHead(500);
+            }
+            else{
+                res.write(JSON.stringify(results));
+            }
+            res.end();
+        });
+    }
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.result !== 'undefined' && reqUrl.query.result !== 'list'){
+        
+    }
+    else{
+        res.end();
+    }
 };
