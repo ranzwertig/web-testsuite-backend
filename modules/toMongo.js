@@ -27,6 +27,7 @@ var url = require('url'),
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
 // please do NOT edit anything below here
+exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     console.log('post');
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
@@ -97,12 +98,13 @@ var db = new Db(config.db, new Server(config.host, config.port, {}), {native_par
         });
     }
     else{
-        res.writeHead(404, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+        res.writeHead(404);
         res.end();
     }
 };
 
 exports.onget = function(req,res){
+    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     res.write('hello');
     res.end();
 };
