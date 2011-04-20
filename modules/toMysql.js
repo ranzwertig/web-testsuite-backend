@@ -93,7 +93,11 @@ exports.onpost = function(req, res){
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
-        var listQuery = db.query("SELECT id, useragent FROM "+config.TABLE_NAME,function(error,results,fields){
+        var query = "SELECT id, useragent FROM "+config.TABLE_NAME;
+        if(typeof reqUrl.query.since !== 'undefined' && /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/.test(reqUrl.query.since)){
+            query += " WHERE created >= '"+reqUrl.query.since+"'";
+        }
+        var listQuery = db.query(query,function(error,results,fields){
             if(error){
                 console.log(error);
                 res.writeHead(500);
