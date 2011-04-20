@@ -50,6 +50,7 @@ exports.onpost = function(req, res){
                 tests: tests
             };
             db.open(function(error, db){
+                console.log('open');
                 if(error){
                     console.log(error);
                     res.write(JSON.stringify({
