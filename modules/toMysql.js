@@ -74,7 +74,8 @@ exports.onpost = function(req, res){
                         status: 200,
                         error: false,
                         message: 'OK',
-                        action: 'post'
+                        action: 'post',
+                        insertedId: results.insertId
                     })); 
                 }
                 res.end();
