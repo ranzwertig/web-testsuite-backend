@@ -56,7 +56,7 @@ exports.onpost = function(req, res){
                     res.write(JSON.stringify({
                         status: 500,
                         error: false,
-                        message: err,
+                        message: error,
                         action: 'post'
                     }));
                     res.seriouslyEnd();
@@ -65,19 +65,33 @@ exports.onpost = function(req, res){
                 }
                 else{
                     console.log('no err');
-                    db.collection(config.collection, function(err, collection){
-                        console.log('collection');
-                        collection.insert(result,function(){
-                            console.log('insert');
+                    db.collection(config.collection, function(error, collection){
+                        if(error){
+                            console.log(error);
                             res.write(JSON.stringify({
-                                status: 200,
+                                status: 500,
                                 error: false,
-                                message: 'OK',
+                                message: error,
                                 action: 'post'
                             }));
-                            res.end();
+                            res.seriouslyEnd();
                             db.close();
-                        });
+                            return;
+                        }
+                        else{
+                            console.log('collection');
+                            collection.insert(result,function(){
+                                console.log('insert');
+                                res.write(JSON.stringify({
+                                    status: 200,
+                                    error: false,
+                                    message: 'OK',
+                                    action: 'post'
+                                }));
+                                res.end();
+                                db.close();
+                            });
+                        }
                     });     
                 }
             });
