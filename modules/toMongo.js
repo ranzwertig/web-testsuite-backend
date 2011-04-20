@@ -70,13 +70,11 @@ exports.onpost = function(req, res){
                             return;
                         }
                         else{
-                            console.log(info);
-                            collection.insert(info);
-                            /*collection.insert({
+                            collection.insert({
                                 created: new Date(),
-                                info: info,
-                                tests: tests
-                            });*/
+                                useragent: info['window.navigator.userAgent'],
+                                tests: 'foobar'
+                            });
                             collection.count(function(err, count) {
                                 console.log(count);
                             });
@@ -87,7 +85,7 @@ exports.onpost = function(req, res){
                                 action: 'post'
                             }));
                             res.end();
-                            //db.close();
+                            db.close();
                         }
                     });     
                 }
