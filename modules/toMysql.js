@@ -65,7 +65,7 @@ exports.onpost = function(req, res){
                         status: 200,
                         error: false,
                         message: err,
-                        action: 'post',
+                        action: 'post'
                     }));
                 }
                 else {
@@ -74,8 +74,7 @@ exports.onpost = function(req, res){
                         status: 200,
                         error: false,
                         message: 'OK',
-                        action: 'post',
-                        generatedfile: fileName
+                        action: 'post'
                     })); 
                 }
                 res.end();
