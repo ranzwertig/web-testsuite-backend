@@ -46,7 +46,7 @@ exports.onpost = function(req,res){
             };
             db.open(function(error, db){
                 if(error){
-                    
+                    console.log(error);
                 }
                 else{
                     db.collection(config.collection, function(err, collection){
