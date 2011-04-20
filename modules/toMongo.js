@@ -29,7 +29,6 @@ var db = new Db(config.db, new Server(config.host, config.port, {}), {native_par
 // please do NOT edit anything below here
 exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
-    console.log('post');
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
         res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         var data = '';
@@ -37,7 +36,6 @@ exports.onpost = function(req, res){
             data += chunk.toString();
         });
         req.on('end',function(){
-            console.log('data');
             var theData = qs.parse(data),
                 infoRaw = theData.info,
                 testsRaw = theData.test_data,
@@ -45,7 +43,6 @@ exports.onpost = function(req, res){
                 tests = JSON.parse(testsRaw);
 
             db.open(function(error, db){
-                console.log('open');
                 if(error){
                     console.log(error);
                     res.write(JSON.stringify({
@@ -59,7 +56,6 @@ exports.onpost = function(req, res){
                     return;
                 }
                 else{
-                    console.log('no err');
                     db.collection(config.collection, function(error, collection){
                         if(error){
                             console.log(error);
@@ -74,7 +70,7 @@ exports.onpost = function(req, res){
                             return;
                         }
                         else{
-                            console.log('collection');
+                            console.log(info);
                             collection.insert(info);
                             /*collection.insert({
                                 created: new Date(),
