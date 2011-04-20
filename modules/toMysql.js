@@ -58,12 +58,14 @@ exports.onpost = function(req, res){
                 
             var userAgent = info['window.navigator.userAgent'];
             db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ('"+infoRaw+"', '"+testsRaw+"', '"+userAgent+"');",function(err,results,fields){
+                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
                 res.write(error); 
                 res.end();
             });
         });
     }
     else{
+        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         res.end();
     }
 };
