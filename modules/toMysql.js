@@ -45,11 +45,13 @@ db.connect();
 exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
+        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         var data = '';
         req.on('data',function(chunk){
             data += chunk.toString();
         });
         req.on('end',function(){
+            console.log('post');
             var theData = qs.parse(data),
                 infoRaw = theData.info,
                 testsRaw = theData.test_data,
@@ -58,14 +60,12 @@ exports.onpost = function(req, res){
                 
             var userAgent = info['window.navigator.userAgent'];
             db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ('"+infoRaw+"', '"+testsRaw+"', '"+userAgent+"');",function(err,results,fields){
-                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-                res.write(error); 
-                res.end();
+                console.log(error);
             });
         });
     }
     else{
-        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+        res.writeHead(404, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         res.end();
     }
 };
