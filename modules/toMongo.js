@@ -43,12 +43,7 @@ exports.onpost = function(req, res){
                 testsRaw = theData.test_data,
                 info = JSON.parse(infoRaw),
                 tests = JSON.parse(testsRaw);
-                
-            var resultObject = {
-                created: new Date(),
-                info: info,
-                tests: tests
-            };
+
             db.open(function(error, db){
                 console.log('open');
                 if(error){
@@ -80,7 +75,11 @@ exports.onpost = function(req, res){
                         }
                         else{
                             console.log('collection');
-                            collection.insert(resultObject);
+                            collection.insert({
+                                created: new Date(),
+                                info: info,
+                                tests: tests
+                            });
                             collection.count(function(err, count) {
                                 console.log(count);
                             });
