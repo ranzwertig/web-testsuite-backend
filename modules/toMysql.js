@@ -60,7 +60,7 @@ exports.onpost = function(req, res){
                 
             var userAgent = info['window.navigator.userAgent'];
             db.query("INSERT into "+config.TABLE_NAME+" (info, tests, useragent) VALUES ('"+infoRaw+"', '"+testsRaw+"', '"+userAgent+"');",function(err,results,fields){
-                console.log(error);
+                console.log(err);
             });
         });
     }
