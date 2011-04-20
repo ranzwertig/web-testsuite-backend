@@ -105,7 +105,7 @@ exports.onget = function(req, res){
                 query += " LIMIT "+reqUrl.query.max;
             }
         }
-        var listQuery = db.query(query,function(error,results,fields){
+        db.query(query,function(error,results,fields){
             if(error){
                 console.log(error);
                 res.writeHead(500);
@@ -116,8 +116,17 @@ exports.onget = function(req, res){
             res.end();
         });
     }
-    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.result !== 'undefined' && reqUrl.query.result !== 'list'){
-        
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.result !== 'undefined' && reqUrl.query.result !== 'list' && /\d*/.test(reqUrl.query.result)){
+        db.query("SELECT id, info, tests, useragent, created FROM "+config.TABLE_NAME+" WHERE id = "+reqUrl.query.result,function(error,results,fields){
+            if(error){
+                console.log(error);
+                res.writeHead(500);
+            }
+            else{
+                res.write(JSON.stringify(results));
+            }
+            res.end();
+        });
     }
     else{
         res.end();
