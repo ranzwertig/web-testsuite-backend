@@ -20,7 +20,7 @@ var config = {
 // end config section
 
 var url = require('url'),
-    qs = require('querystring');
+    qs = require('querystring'),
     Db = require('mongodb').Db,
     Server = require('mongodb').Server;
 
@@ -44,7 +44,7 @@ exports.onpost = function(req, res){
                 info = JSON.parse(infoRaw),
                 tests = JSON.parse(testsRaw);
                 
-            var result = {
+            var resultObject = {
                 created: new Date(),
                 info: info,
                 tests: tests
@@ -80,17 +80,18 @@ exports.onpost = function(req, res){
                         }
                         else{
                             console.log('collection');
-                            collection.insert(result,function(){
-                                console.log('insert');
-                                res.write(JSON.stringify({
-                                    status: 200,
-                                    error: false,
-                                    message: 'OK',
-                                    action: 'post'
-                                }));
-                                res.end();
-                                db.close();
+                            collection.insert(resultObject);
+                            collection.count(function(err, count) {
+                                console.log(count);
                             });
+                            res.write(JSON.stringify({
+                                status: 200,
+                                error: false,
+                                message: 'OK',
+                                action: 'post'
+                            }));
+                            res.end();
+                            db.close();
                         }
                     });     
                 }
