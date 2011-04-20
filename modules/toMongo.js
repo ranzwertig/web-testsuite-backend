@@ -2,6 +2,14 @@
  *  This module stores the data sent from the web-testsuite inside a mongodb
  *  datastore.
  * 
+ *  A result posted to 
+ *  POST /results/
+ *  is stored in a mongodb database and collection configured in the config 
+ *  section.
+ *  The object keys have to be modified becaus mongodb does not support '.' in
+ *  object keys. They are replaced with '-'.
+ *  e.g. 'window.navigator.userAgent' => 'window-navigator-userAgent'
+ * 
  *  @dependency https://github.com/christkv/node-mongodb-native
  * 
  *  @version 0.0.1
@@ -42,6 +50,7 @@ exports.onpost = function(req, res){
                 info = JSON.parse(infoRaw),
                 tests = JSON.parse(testsRaw);
             
+            //  clean up the info object (remove '.' in keys)
             var cleanInfo = {}; 
             for(var key in info){
                 if(info.hasOwnProperty(key)){ 
@@ -80,52 +89,8 @@ exports.onpost = function(req, res){
                         else{
                             collection.insert({
                                 created: new Date(),
-                                info: cleanInfo,
-                                /*windowHTMLAudioElement: info['window.HTMLAudioElement'],
-                                windowHTMLCanvasElement: info['window.HTMLCanvasElement'],
-                                windowHTMLMediaElement: info['window.HTMLMediaElement'],
-                                windowHTMLMeterElement: info['window.HTMLMeterElement'],
-                                windowHTMLVideoElement: info['window.HTMLVideoElement'],
-                                windowJSONparse: info['window.JSON.parse'],
-                                window.JSON.stringify: info[''],
-                                window.NodeList: info[''],
-                                window.SVGDocument: info[''],
-                                window.WebGLRenderingContext: info[''],
-                                window.Worker: info[''],
-                                window.applicationCache: info[''],
-                                window.localStorage: info[''],
-                                window.navigator.appCodeName: info[''],
-                                window.navigator.appMinorVersio: info[''],
-                                window.navigator.appName: info[''],
-                                window.navigator.appVersion: info[''],
-                                window.navigator.cookieEnabled: info[''],
-                                window.navigator.geolocation: info[''],
-                                indow.navigator.getStorageUpdates: info[''],
-                                window.navigator.javaEnabled: info[''],
-                                window.navigator.language: info[''],
-                                window.navigator.mimeTypes: info[''],
-                                window.navigator.onLine: info[''],
-                                window.navigator.platform: info[''],
-                                window.navigator.plugins: info[''],
-                                window.navigator.product: info[''],
-                                window.navigator.productSub: info[''],
-                                window.navigator.taintEnabled: info[''],
-                                window.navigator.userAgent: info[''],
-                                window.navigator.userLanguage: info[''],
-                                window.navigator.vendor: info[''],
-                                window.navigator.vendorSub: info[''],
-                                window.screen.availHeight: info[''],
-                                window.screen.availLeft: info[''],
-                                window.screen.availTop: info[''],
-                                window.screen.availWidth: info[''],
-                                window.screen.height: info[''],
-                                window.screen.left: info[''],
-                                window.screen.top: info[''],
-                                window.screen.width: info[''],     */                           
+                                info: cleanInfo,                      
                                 tests: tests
-                            });
-                            collection.count(function(err, count) {
-                                console.log(count);
                             });
                             res.write(JSON.stringify({
                                 status: 200,
