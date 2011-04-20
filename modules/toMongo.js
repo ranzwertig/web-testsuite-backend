@@ -27,7 +27,7 @@ var url = require('url'),
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
 // please do NOT edit anything below here
-exports.onpost = function(req,res){
+exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     console.log('post');
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
@@ -52,6 +52,12 @@ exports.onpost = function(req,res){
             db.open(function(error, db){
                 if(error){
                     console.log(error);
+                    res.write(JSON.stringify({
+                        status: 500,
+                        error: false,
+                        message: err,
+                        action: 'post'
+                    }));
                 }
                 else{
                     db.collection(config.collection, function(err, collection){
