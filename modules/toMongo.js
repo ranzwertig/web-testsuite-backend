@@ -10,6 +10,14 @@
  *  object keys. They are replaced with '-'.
  *  e.g. 'window.navigator.userAgent' => 'window-navigator-userAgent'
  * 
+ *  You can retrieve a list of all results by performing a request like
+ *  GET /results/?result=list
+ *  This list can be filtered using query parameters like
+ *  max=[\d*]                   // list [\d*] results 
+ *  offset=[\d*]                // list results ignoring the first [\d*] results
+ *  or select a single result 
+ *  /results/?result=[id]       // fetch the result with the id [id]
+ * 
  *  @dependency https://github.com/christkv/node-mongodb-native
  * 
  *  @version 0.0.1
@@ -149,19 +157,15 @@ exports.onget = function(req,res){
                             }
                         };
                         if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max) && typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
-                            console.log('both');
                             collection.find({}, {'_id': 1},{skip:reqUrl.query.offset,limit:reqUrl.query.max}).toArray(processResult);    
                         }
                         else if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max)){
-                            console.log('max');
                             collection.find({}, {'_id': 1},{limit:reqUrl.query.max}).toArray(processResult);
                         }
                         else if(typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
-                            console.log('offset');
                             collection.find({}, {'_id': 1},{skip:reqUrl.query.offset}).toArray(processResult);
                         }
                         else{
-                            console.log('none');
                             collection.find({}, {'_id': 1}).toArray(processResult);
                         }
                     }
