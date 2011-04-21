@@ -6,9 +6,10 @@
  *  The modules are executed in the same order they are defined.
  */
 exports.modulesEnabled = [
+       'defaultRoute'  
     // 'toMysql'
     //,'toFile'
-       'toMongo'
+    //,'toMongo'
 ];
 
 /**
