@@ -113,7 +113,26 @@ exports.onpost = function(req, res){
 };
 
 exports.onget = function(req,res){
-    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-    res.write('hello');
-    res.end();
+    var reqUrl = url.parse(req.url, true);
+    if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
+        db.open(function(error, db){
+            if(error){
+                console.log(error);
+            }
+            else{
+                db.collection(config.collection, function(error, collection){
+                    if(error){
+                        console.log(error);
+                    }
+                    else{
+                        var list = collection.find({}, {'_id': 1});
+                        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                        res.write(JSON.stringify(list));
+                        res.end();
+                        db.close();
+                    }
+                });
+            }
+        });
+    }
 };
