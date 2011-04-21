@@ -114,6 +114,9 @@ exports.onpost = function(req, res){
             });
         });
     }
+    else{
+        res.end();
+    }
 };
 
 exports.onget = function(req,res){
@@ -207,5 +210,8 @@ exports.onget = function(req,res){
                 });
             }
         });
+    }
+    else{
+        res.end();
     }
 };
