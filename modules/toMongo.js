@@ -117,6 +117,7 @@ exports.onget = function(req,res){
     if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
         db.open(function(error, db){
             if(error){
+                res.writeHead(500);
                 console.log(error.message);
                 db.close();
                 res.end();
@@ -125,17 +126,66 @@ exports.onget = function(req,res){
             else{
                 db.collection(config.collection, function(error, collection){
                     if(error){
-                        console.log(error.message);
+                        res.writeHead(500);
+                        console.log(error);
                         db.close();
                         res.end();
                         return;
                     }
                     else{
                         collection.find({}, {'_id': 1}).toArray(function(error, results){
-                            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-                            res.write(JSON.stringify(results));
-                            res.end();
-                            db.close();
+                            if(error){
+                                res.writeHead(500);
+                                console.log(error);
+                                db.close();
+                                res.end();
+                                return; 
+                            }
+                            else{
+                                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                                res.write(JSON.stringify(results));
+                                res.end();
+                                db.close(); 
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.result !== 'undefined' && reqUrl.query.result !== 'list'){
+        db.open(function(error, db){
+            if(error){
+                res.writeHead(500);
+                console.log(error.message);
+                db.close();
+                res.end();
+                return;
+            }
+            else{
+                db.collection(config.collection, function(error, collection){
+                    if(error){
+                        res.writeHead(500);
+                        console.log(error);
+                        db.close();
+                        res.end();
+                        return;
+                    }
+                    else{
+                        collection.find({'_id':reqUrl.query.result}).toArray(function(error, results){
+                            if(error){
+                                res.writeHead(500);
+                                console.log(error);
+                                db.close();
+                                res.end();
+                                return; 
+                            }
+                            else{
+                                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                                res.write(JSON.stringify(results));
+                                res.end();
+                                db.close(); 
+                            }
                         });
                     }
                 });
