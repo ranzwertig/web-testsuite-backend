@@ -118,11 +118,17 @@ exports.onget = function(req,res){
         db.open(function(error, db){
             if(error){
                 console.log(error);
+                db.close();
+                res.end();
+                return;
             }
             else{
                 db.collection(config.collection, function(error, collection){
                     if(error){
                         console.log(error);
+                        db.close();
+                        res.end();
+                        return;
                     }
                     else{
                         var list = collection.find({}, {'_id': 1});
