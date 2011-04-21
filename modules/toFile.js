@@ -88,10 +88,6 @@ exports.onpost = function(req, res){
             res.end();
         });
     }
-    // default route
-    else {
-        res.end();
-    }
 };
 
 exports.onget = function(req, res){
@@ -146,9 +142,5 @@ exports.onget = function(req, res){
             res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
             res.end();
         });
-    }
-    // default route
-    else{
-        res.end();
     }
 };
