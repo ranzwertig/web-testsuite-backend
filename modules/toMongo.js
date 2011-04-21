@@ -10,6 +10,14 @@
  *  object keys. They are replaced with '-'.
  *  e.g. 'window.navigator.userAgent' => 'window-navigator-userAgent'
  * 
+ *  You can retrieve a list of all results by performing a request like
+ *  GET /results/?result=list
+ *  This list can be filtered using query parameters like
+ *  max=[\d*]                   // list [\d*] results 
+ *  offset=[\d*]                // list results ignoring the first [\d*] results
+ *  or select a single result 
+ *  /results/?result=[id]       // fetch the result with the id [id]
+ * 
  *  @dependency https://github.com/christkv/node-mongodb-native
  * 
  *  @version 0.0.1
@@ -113,7 +121,95 @@ exports.onpost = function(req, res){
 };
 
 exports.onget = function(req,res){
-    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-    res.write('hello');
-    res.end();
+    var reqUrl = url.parse(req.url, true);
+    if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
+        db.open(function(error, db){
+            if(error){
+                res.writeHead(500);
+                console.log(error.message);
+                db.close();
+                res.end();
+                return;
+            }
+            else{
+                db.collection(config.collection, function(error, collection){
+                    if(error){
+                        res.writeHead(500);
+                        console.log(error);
+                        db.close();
+                        res.end();
+                        return;
+                    }
+                    else{
+                        var processResult = function(error, results){
+                            if(error){
+                                res.writeHead(500);
+                                console.log(error);
+                                db.close();
+                                res.end();
+                                return; 
+                            }
+                            else{
+                                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                                res.write(JSON.stringify(results));
+                                res.end();
+                                db.close(); 
+                            }
+                        };
+                        if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max) && typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
+                            collection.find({}, {'_id': 1},{skip:reqUrl.query.offset,limit:reqUrl.query.max}).toArray(processResult);    
+                        }
+                        else if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max)){
+                            collection.find({}, {'_id': 1},{limit:reqUrl.query.max}).toArray(processResult);
+                        }
+                        else if(typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
+                            collection.find({}, {'_id': 1},{skip:reqUrl.query.offset}).toArray(processResult);
+                        }
+                        else{
+                            collection.find({}, {'_id': 1}).toArray(processResult);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    else if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && typeof reqUrl.query.result !== 'undefined' && reqUrl.query.result !== 'list'){
+        db.open(function(error, db){
+            if(error){
+                res.writeHead(500);
+                console.log(error.message);
+                db.close();
+                res.end();
+                return;
+            }
+            else{
+                db.collection(config.collection, function(error, collection){
+                    if(error){
+                        res.writeHead(500);
+                        console.log(error);
+                        db.close();
+                        res.end();
+                        return;
+                    }
+                    else{
+                        collection.find({'_id':new db.bson_serializer.ObjectID(reqUrl.query.result)}).toArray(function(error, results){
+                            if(error){
+                                res.writeHead(500);
+                                console.log(error);
+                                db.close();
+                                res.end();
+                                return; 
+                            }
+                            else{
+                                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                                res.write(JSON.stringify(results));
+                                res.end();
+                                db.close(); 
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 };
