@@ -150,15 +150,15 @@ exports.onget = function(req,res){
                         };
                         if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max) && typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
                             console.log('both');
-                            collection.find({}, {'_id': 1}).skip(reqUrl.query.offset).limit(reqUrl.query.max).toArray(processResult);    
+                            collection.find({}, {'_id': 1},{skip:reqUrl.query.offset,limit:reqUrl.query.max}).toArray(processResult);    
                         }
                         else if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max)){
                             console.log('max');
-                            collection.find({}, {'_id': 1}).limit(reqUrl.query.max).toArray(processResult);
+                            collection.find({}, {'_id': 1},{limit:reqUrl.query.max}).toArray(processResult);
                         }
                         else if(typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
                             console.log('offset');
-                            collection.find({}, {'_id': 1}).skip(reqUrl.query.offset).toArray(processResult);
+                            collection.find({}, {'_id': 1},{skip:reqUrl.query.offset}).toArray(processResult);
                         }
                         else{
                             console.log('none');
