@@ -30,7 +30,8 @@ var config = {
 var url = require('url'),
     qs = require('querystring'),
     Db = require('mongodb').Db,
-    Server = require('mongodb').Server;
+    Server = require('mongodb').Server,
+    ObjectId = require('mongodb').ObjectId;
 
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  
@@ -172,7 +173,7 @@ exports.onget = function(req,res){
                         return;
                     }
                     else{
-                        collection.find({'_id':reqUrl.query.result}).toArray(function(error, results){
+                        collection.find({'_id':new ObjectId(reqUrl.query.result)}).toArray(function(error, results){
                             if(error){
                                 res.writeHead(500);
                                 console.log(error);
