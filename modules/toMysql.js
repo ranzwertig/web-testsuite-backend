@@ -57,7 +57,7 @@ db.connect();
 exports.onpost = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
-        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+        res.writeHead(200, {'Content-Type': 'application/json'});
         var data = '';
         req.on('data',function(chunk){
             data += chunk.toString();
@@ -140,6 +140,8 @@ exports.onget = function(req, res){
         });
     }
     else{
+        res.writeHead(200);
+        res.write('Welcome');
         res.end();
     }
 };
