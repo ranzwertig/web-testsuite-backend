@@ -12,4 +12,7 @@ exports.onget = function(req, res){
         res.write('Welcome to the web-testsuite-backend');
         res.end();
     }
+    else{
+        res.end();
+    }
 };
