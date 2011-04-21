@@ -133,7 +133,7 @@ exports.onget = function(req,res){
                         return;
                     }
                     else{
-                        collection.find({}, {'_id': 1}).toArray(function(error, results){
+                        var processResult = function(error, results){
                             if(error){
                                 res.writeHead(500);
                                 console.log(error);
@@ -147,7 +147,19 @@ exports.onget = function(req,res){
                                 res.end();
                                 db.close(); 
                             }
-                        });
+                        };
+                        if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max) && typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
+                            collection.find({}, {'_id': 1}).skip(reqUrl.query.offset).limit(reqUrl.query.max).toArray(processResult);    
+                        }
+                        else if(typeof reqUrl.query.max !== 'undefined' && /\d*/.test(reqUrl.query.max)){
+                            collection.find({}, {'_id': 1}).limit(reqUrl.query.max).toArray(processResult);
+                        }
+                        else if(typeof reqUrl.query.offset !== 'undefined' && /\d*/.test(reqUrl.query.offset)){
+                            collection.find({}, {'_id': 1}).skip(reqUrl.query.offset).toArray(processResult);
+                        }
+                        else{
+                            collection.find({}, {'_id': 1}).toArray(processResult);
+                        }
                     }
                 });
             }
