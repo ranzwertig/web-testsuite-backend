@@ -117,7 +117,7 @@ exports.onget = function(req,res){
     if((reqUrl.pathname === '/results/' || reqUrl.pathname === '/results') && reqUrl.query.result === 'list'){
         db.open(function(error, db){
             if(error){
-                console.log(error);
+                console.log(error.message);
                 db.close();
                 res.end();
                 return;
@@ -125,7 +125,7 @@ exports.onget = function(req,res){
             else{
                 db.collection(config.collection, function(error, collection){
                     if(error){
-                        console.log(error);
+                        console.log(error.message);
                         db.close();
                         res.end();
                         return;
