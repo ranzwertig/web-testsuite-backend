@@ -8,8 +8,8 @@
 exports.modulesEnabled = [
        'defaultRoute'
     // 'toMysql'
-    //,'toFile'
-      ,'toMongo'
+      ,'toFile'
+    //,'toMongo'
 ];
 
 /**
@@ -17,6 +17,6 @@ exports.modulesEnabled = [
  *  configure the port and the host the http server should listen on.
  */
 exports.httpSettings = {
-    port: process.env.C9_PORT,
+    port: process.env.C9_PORT || 8080,
     host: '0.0.0.0'
 };
