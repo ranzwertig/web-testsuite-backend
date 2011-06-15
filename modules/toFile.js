@@ -19,7 +19,7 @@
 var config = {
     // define the Path where the logs should be saved
     // e.g. '.', '../foo', '/var/log'
-    outputPath: './output',
+    outputPath: '/var/web-testsuite-results',
     
     // Microtime: %microtime%
     // Date UTC String: %dateUTC%
