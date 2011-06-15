@@ -38,7 +38,6 @@ var fs = require('fs'),
 
 // the post request handler
 exports.onpost = function(req, res){
-    console.log('post');
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/results' || reqUrl.pathname === '/results/'){
         var microtime = new Date().getTime(),
@@ -71,7 +70,7 @@ exports.onpost = function(req, res){
         // no more data
         req.on('end', function(){
             outputStream.end();
-            
+            console.log('end')
             res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
             // build response object
             var responseJson = {
