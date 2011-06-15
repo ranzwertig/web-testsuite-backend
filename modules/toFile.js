@@ -60,7 +60,6 @@ exports.onpost = function(req, res){
                 data += chunk.toString();
             });
             req.on('end',function(){
-                console.log('end');
                 try {
                     var theData = qs.parse(data),
                         infoRaw = theData.info,
@@ -73,9 +72,7 @@ exports.onpost = function(req, res){
                                  };
                                  
                     fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
-                        console.log('in file');
                         if(error){
-                            console.log(error);
                             throw error;
                         }
                         else{
@@ -96,7 +93,6 @@ exports.onpost = function(req, res){
                         }
                     });
                 } catch(error) {
-                    console.log(error);
                     res.writeHead(500);
                     res.write(JSON.stringify({
                         status: 500,
@@ -147,7 +143,6 @@ exports.onpost = function(req, res){
         }
     }
     else{
-        console.log('no resp');
         res.end();
     }
 };
