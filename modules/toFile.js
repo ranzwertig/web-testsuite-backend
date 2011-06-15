@@ -67,9 +67,9 @@ exports.onpost = function(req, res){
                         info = JSON.parse(infoRaw),
                         tests = JSON.parse(testsRaw),
                         result = {
-                                    info: info,
-                                    tests: tests
-                                 };
+                            info: info,
+                            tests: tests
+                        };
                                  
                     fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
                         if(error){
