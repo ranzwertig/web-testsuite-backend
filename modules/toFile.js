@@ -37,6 +37,7 @@ var config = {
 // Do NOT touch anything below this!!!
 var fs = require('fs'),
     util = require('util'),
+    qs = require('querystring'),
     url = require('url');
 
 // the post request handler
@@ -66,9 +67,7 @@ exports.onpost = function(req, res){
                          
             fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
                 if(error){
-                    res.writeHead(500);
-                    res.end();
-                    return;
+                    throw error;
                 }
                 else{
                     res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
