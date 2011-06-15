@@ -24,7 +24,10 @@ var config = {
     // Microtime: %microtime%
     // Date UTC String: %dateUTC%
     // feel free to add more
-    fileName: 'log-%microtime%-%dateUTC%.json'
+    fileName: 'log-%microtime%-%dateUTC%.json',
+    
+    // parse the results into JSON
+    saveAsJson: true
 };
 // config section end
 
@@ -50,42 +53,78 @@ exports.onpost = function(req, res){
         fileName = fileName.replace(/,/g, '');
         fileName = fileName.replace(/:/g, '-');
         
-        // init output stream
-        var outputStream = fs.createWriteStream(
-            config.outputPath+'/'+fileName,
-            { 
-                flags: 'w',
-                encoding: null,
-                mode: 0666 
-            }
-        );
-        
-        // pump data from request to output
-        util.pump(req, outputStream, function(error){
-            res.writeHead(500);
-            res.end();
-            return;
-        });
-        
-        // no more data
-        req.on('end', function(){
-            outputStream.end();
-            console.log('end')
-            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-            // build response object
-            var responseJson = {
-                status: 200,
-                error: false,
-                message: 'OK',
-                action: 'post',
-                generatedfile: fileName
-            };
+        if(config.saveAsJson === true){ // parse the request and store json data
+            var theData = qs.parse(data),
+                infoRaw = theData.info,
+                testsRaw = theData.test_data,
+                info = JSON.parse(infoRaw),
+                tests = JSON.parse(testsRaw),
+                result = {
+                            info: info,
+                            tests: tests
+                         };
+                         
+            fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
+                if(error){
+                    res.writeHead(500);
+                    res.end();
+                    return;
+                }
+                else{
+                    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                    // build response object
+                    var responseJson = {
+                        status: 200,
+                        error: false,
+                        message: 'OK',
+                        action: 'post',
+                        generatedfile: fileName
+                    };
+                    
+                    // send response data
+                    res.write(JSON.stringify(responseJson));
+                    // send signal module finished
+                    res.end();
+                }
+            });
+        }
+        else{ // use streaming and just store unparsed request data
+            // init output stream
+            var outputStream = fs.createWriteStream(
+                config.outputPath+'/'+fileName,
+                { 
+                    flags: 'w',
+                    encoding: null,
+                    mode: 0666 
+                }
+            );
             
-            // send response data
-            res.write(JSON.stringify(responseJson));
-            // send signal module finished
-            res.end();
-        });
+            // pump data from request to output
+            util.pump(req, outputStream, function(error){
+                res.writeHead(500);
+                res.end();
+                return;
+            });
+            
+            // no more data
+            req.on('end', function(){
+                outputStream.end();
+                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                // build response object
+                var responseJson = {
+                    status: 200,
+                    error: false,
+                    message: 'OK',
+                    action: 'post',
+                    generatedfile: fileName
+                };
+                
+                // send response data
+                res.write(JSON.stringify(responseJson));
+                // send signal module finished
+                res.end();
+            });
+        }
     }
     else{
         res.end();
