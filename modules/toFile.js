@@ -55,6 +55,11 @@ exports.onpost = function(req, res){
         fileName = fileName.replace(/:/g, '-');
         
         if(config.saveAsJson === true){ // parse the request and store json data
+            var data = '';
+            req.on('data',function(chunk){
+                data += chunk.toString();
+            });
+            
             var theData = qs.parse(data),
                 infoRaw = theData.info,
                 testsRaw = theData.test_data,
