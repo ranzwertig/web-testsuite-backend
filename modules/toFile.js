@@ -59,36 +59,52 @@ exports.onpost = function(req, res){
             req.on('data',function(chunk){
                 data += chunk.toString();
             });
-            
-            var theData = qs.parse(data),
-                infoRaw = theData.info,
-                testsRaw = theData.test_data,
-                info = JSON.parse(infoRaw),
-                tests = JSON.parse(testsRaw),
-                result = {
-                            info: info,
-                            tests: tests
-                         };
-                         
-            fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
-                if(error){
-                    throw error;
-                }
-                else{
-                    res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-                    // build response object
-                    var responseJson = {
-                        status: 200,
+            req.on('end',function(){
+                console.log('end');
+                try {
+                    var theData = qs.parse(data),
+                        infoRaw = theData.info,
+                        testsRaw = theData.test_data,
+                        info = JSON.parse(infoRaw),
+                        tests = JSON.parse(testsRaw),
+                        result = {
+                                    info: info,
+                                    tests: tests
+                                 };
+                                 
+                    fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
+                        console.log('in file');
+                        if(error){
+                            console.log(error);
+                            throw error;
+                        }
+                        else{
+                            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                            // build response object
+                            var responseJson = {
+                                status: 200,
+                                error: false,
+                                message: 'OK',
+                                action: 'post',
+                                generatedfile: fileName
+                            };
+                            
+                            // send response data
+                            res.write(JSON.stringify(responseJson));
+                            // send signal module finished
+                            res.end();
+                        }
+                    });
+                } catch(error) {
+                    console.log(error);
+                    res.writeHead(500);
+                    res.write(JSON.stringify({
+                        status: 500,
                         error: false,
-                        message: 'OK',
-                        action: 'post',
-                        generatedfile: fileName
-                    };
-                    
-                    // send response data
-                    res.write(JSON.stringify(responseJson));
-                    // send signal module finished
-                    res.end();
+                        message: error,
+                        action: 'post'
+                    }));
+                    return;
                 }
             });
         }
@@ -131,6 +147,7 @@ exports.onpost = function(req, res){
         }
     }
     else{
+        console.log('no resp');
         res.end();
     }
 };
