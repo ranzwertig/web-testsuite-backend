@@ -47,7 +47,7 @@ exports.onget = function(req, res){
                     if (typeof ua === 'undefined') {
                         parserFail.push({
                             uaString: uaString,
-                            parserOutput: ua
+                            parserOutput: 'undefined'
                         });
                     }    
                     else {
