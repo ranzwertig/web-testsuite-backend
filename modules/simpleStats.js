@@ -35,10 +35,10 @@ exports.onget = function(req, res){
                         res.write(key+':\n');
                         var total = 0;
                         for(var version in versionStats){
-                            res.write(version+':\t'+versionStats[version]+'\n');
+                            res.write('\t'+version+':\t'+versionStats[version]+'\n');
                             total += versionStats[version];
                         }
-                        res.write('total:\t'+total+'\n\n');
+                        res.write('\ttotal:\t'+total+'\n\n');
                     }
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
