@@ -130,12 +130,13 @@ var UserAgentParser = {
 			var match = ua.match();
 		}
         
+        // Chrome
         //      Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.71 Safari/534.24
         //      Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.3 Safari/534.24
         //      Mozilla/5.0 (X11; CrOS i686 0.13.587) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.14 Safari/535.1
         //      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_6) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.698.0 Safari/534.24
-        else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/(.+) (Safari)\/(.+)/.test(ua)){
-            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/(.+) (Safari)\/(.+)/);
+        else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/([^\s]+) (Safari)\/([^\s]+)$/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/([^\s]+) (Safari)\/([^\s]+)$/);
             
             var hardware = {},
                 os = {};
@@ -179,6 +180,42 @@ var UserAgentParser = {
                 }
             };
             
+        }
+        // Firefox
+        //      Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:2.0b8pre) Gecko/20101128 Firefox/4.0b8pre
+        //      Mozilla/5.0 (Windows NT 6.1; rv:2.0) Gecko/20110319 Firefox/4.0
+        //      Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:2.0b10) Gecko/20110126 Firefox/4.0b10
+        //      Mozilla/5.0 (X11; U; FreeBSD i386; en-US; rv:1.9.2.9) Gecko/20100913 Firefox/3.6.9
+        //      Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8
+        else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/);
+            console.log(match);
+            
+            var hardware = {},
+                os = {};
+            
+            if(/(Windows [^;]+);([^;]+)/.test(match[3])){
+                //var osMatch = match[3].match(/([^;]+);([^;]+)/);
+                //hardware.name = osMatch[2].trim();
+                //os.name = osMatch[1].trim();
+            }
+            
+            var ret = {
+                    hardware: hardware,
+                os: os,
+                engine:{
+                    name: match[4].trim(), //     Presto,     Webkit,
+                    version: [match[5].trim()], //  2.4.15,     534.3, 533.19.4
+                    locale: "", // de-DE, en-GB, en-de, en, de
+                    security:"", // N, U, I
+                    raw: {} // {Presto:"2.4.15", Version:"10.00"}
+                    },
+                browser:{
+                    name: match[6].trim(), //    Safari    	Opera
+                    version: match[7].trim(), // 5.0.3       11.0
+                    raw: {}
+                }
+            };
         }
 		return ret;
 	},
