@@ -126,9 +126,60 @@ var UserAgentParser = {
 		
 		// iPhone4 iOS4
 		// 		Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_2_1 like Mac OS X; de-de) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8C148 Safari/6533.18.5",
-		else if (/^Mozilla\/\d+\.\d+ .*iPhone/){
+		else if (/^Mozilla\/\d+\.\d+ .*iPhone/.test(ua)){
 			var match = ua.match();
 		}
+        
+        //      Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.71 Safari/534.24
+        //      Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.3 Safari/534.24
+        //      Mozilla/5.0 (X11; CrOS i686 0.13.587) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.14 Safari/535.1
+        //      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_6) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.698.0 Safari/534.24
+        else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/(.+) (Safari)\/(.+)/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (.+)\/(.+) \(([^)]+)\) (Chrome)\/(.+) (Safari)\/(.+)/);
+            
+            var hardware = {},
+                os = {};
+            
+            if(/(Windows [^;]+);([^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/([^;]+);([^;]+)/);
+                hardware.name = osMatch[2].trim();
+                os.name = osMatch[1].trim();
+            }
+            else if(/(X11); (CrOS) ([^;]+) ([^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/(X11); (CrOS) ([^;]+) ([^;]+)/);
+                os.name = osMatch[2].trim();
+                os.version = osMatch[4].trim();
+                hardware.name = osMatch[3].trim();
+            }
+            else if(/(X11); (Linux) ([^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/(X11); (Linux) ([^;]+)/);
+                os.name = osMatch[2].trim();
+                hardware.name = osMatch[3].trim();
+            }
+            else if(/(Macintosh); ([^;]+) (Mac [^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/(Macintosh); ([^;]+) (Mac [^;]+)/);
+                os.name = osMatch[3].trim();
+                hardware.name = osMatch[2].trim();
+                hardware.platform = osMatch[1].trim();
+            }
+            var ret = {
+                    hardware: hardware,
+                os: os,
+                engine:{
+                    name: match[4].trim(), //     Presto,     Webkit,
+                    version: [match[5].trim()], //  2.4.15,     534.3, 533.19.4
+                    locale: "", // de-DE, en-GB, en-de, en, de
+                    security:"", // N, U, I
+                    raw: {} // {Presto:"2.4.15", Version:"10.00"}
+                    },
+                browser:{
+                    name: match[7].trim(), //    Safari		Opera
+                    version: match[8].trim(), // 5.0.3       11.0
+                    raw: {}
+                }
+            };
+            
+        }
 		return ret;
 	},
 	
