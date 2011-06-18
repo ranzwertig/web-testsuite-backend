@@ -37,7 +37,7 @@ exports.onget = function(req, res){
                         stats: {
                             browsers: browserStats
                         },
-                        parserOk: parserOk,
+                        //parserOk: parserOk,
                         parserFail: parserFail
                     }));
                     res.end();
