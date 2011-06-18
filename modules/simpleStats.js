@@ -34,9 +34,7 @@ exports.onget = function(req, res){
                         error: false,
                         message: 'OK',
                         action: 'GET /simplestats/',
-                        stats: {
-                            browsers: browserStats
-                        },
+                        browsers: browserStats,
                         //parserOk: parserOk,
                         parserFail: parserFail
                     }));
