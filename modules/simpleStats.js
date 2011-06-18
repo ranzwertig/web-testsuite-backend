@@ -23,6 +23,7 @@ exports.onget = function(req, res){
                 res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
       
                 var parserFail = [];
+                var parserOk = [];
       
                 var barrier = new Barrier(files.length, function() {
                     res.write(JSON.stringify({
@@ -31,6 +32,7 @@ exports.onget = function(req, res){
                         message: 'OK',
                         action: 'GET /simplestats/',
                         stats: {},
+                        parserOk: parserOk,
                         parserFail: parserFail
                     }));
                     res.end();
@@ -51,7 +53,9 @@ exports.onget = function(req, res){
                         });
                     }    
                     else {
-                        // do sth
+                        parserOk.push({
+                            uaString: uaString
+                        });
                     }
                     barrier.commit();
                 };
