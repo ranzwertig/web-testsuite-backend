@@ -164,7 +164,7 @@ exports.onget = function(req, res){
                 };
             }
             else{
-                res.writeHead(500, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+                res.writeHead(500, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
                 var responseJson = {
                     status: 500,
                     error: true,

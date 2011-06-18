@@ -10,6 +10,7 @@ exports.modulesEnabled = [
     // 'toMysql'
       ,'toFile'
     //,'toMongo'
+      ,'simpleStats'
 ];
 
 /**
