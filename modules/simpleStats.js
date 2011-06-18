@@ -24,6 +24,8 @@ exports.onget = function(req, res){
       
                 var parserFail = [];
                 var parserOk = [];
+                
+                browserStats = [];
       
                 var barrier = new Barrier(files.length, function() {
                     res.write(JSON.stringify({
@@ -31,7 +33,9 @@ exports.onget = function(req, res){
                         error: false,
                         message: 'OK',
                         action: 'GET /simplestats/',
-                        stats: {},
+                        stats: {
+                            browsers: browserStats
+                        },
                         parserOk: parserOk,
                         parserFail: parserFail
                     }));
@@ -56,6 +60,10 @@ exports.onget = function(req, res){
                         parserOk.push({
                             uaString: uaString
                         });
+                        if(typeof browserStats[ua.browser.name] === 'undefined'){
+                            browserStats[ua.browser.name] = [];
+                        }
+                        browserStats[ua.browser.name][ua.browser.version] += 1;
                     }
                     barrier.commit();
                 };
