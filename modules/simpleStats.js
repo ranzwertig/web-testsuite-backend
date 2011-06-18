@@ -60,6 +60,7 @@ exports.onget = function(req, res){
                         parserOk.push({
                             uaString: uaString
                         });
+                        console.log(ua);
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
                         }
