@@ -21,21 +21,37 @@ exports.onget = function(req, res){
         fs.readdir(config.outputPath, function(err, files){
             if(!err){
                 res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
-                
+      
+                var parserFail = [];
+      
                 var barrier = new Barrier(files.length, function() {
+                    res.write(JSON.stringify({
+                        status: 200,
+                        error: false,
+                        message: 'OK',
+                        action: 'GET /simplestats/',
+                        stats: {},
+                        parserFail: parserFail
+                    }));
                     res.end();
                 });
+                
                 
                 var processFile = function (err, data) {
                     var test = JSON.parse(data);
                     var info = test.info;
+                    var uaString = info["window.navigator.userAgent"];
+                    
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     
                     if (typeof ua === 'undefined') {
-                        // do nothing
+                        parserFail.push({
+                            uaString: uaString,
+                            parserOutput: ua
+                        });
                     }    
                     else {
-                        res.write(ua.os.name+'\n');
+                        // do sth
                     }
                     barrier.commit();
                 };
