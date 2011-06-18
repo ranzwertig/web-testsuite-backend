@@ -28,6 +28,7 @@ exports.onget = function(req, res){
                 browserStats = [];
       
                 var barrier = new Barrier(files.length, function() {
+                    console.log(browserStats);
                     res.write(JSON.stringify({
                         status: 200,
                         error: false,
@@ -63,8 +64,10 @@ exports.onget = function(req, res){
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
                         }
+                        if(typeof browserStats[ua.browser.name][ua.browser.version] === 'undefined'){
+                            browserStats[ua.browser.name][ua.browser.version] = 0;
+                        }
                         browserStats[ua.browser.name][ua.browser.version] += 1;
-                        console.log(browserStats);
                     }
                     barrier.commit();
                 };
