@@ -30,9 +30,13 @@ exports.onget = function(req, res){
                     var test = JSON.parse(data);
                     var info = test.info;
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
-                    console.log(ua);
                     
-                    //res.write(ua.os.name+'\n');
+                    if (typeof ua === 'undefined') {
+                        // do nothing
+                    }    
+                    else {
+                        res.write(ua.os.name+'\n');
+                    }
                     barrier.commit();
                 };
                 
