@@ -60,11 +60,11 @@ exports.onget = function(req, res){
                         parserOk.push({
                             uaString: uaString
                         });
-                        console.log(ua);
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
                         }
                         browserStats[ua.browser.name][ua.browser.version] += 1;
+                        console.log(browserStats);
                     }
                     barrier.commit();
                 };
