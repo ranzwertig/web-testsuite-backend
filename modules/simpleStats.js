@@ -28,15 +28,17 @@ exports.onget = function(req, res){
                 var browserStats = [];
       
                 var barrier = new Barrier(files.length, function() {
-                    console.log(browserStats);
                     // output browser stats
                     res.write('Browser Statistics:\n------------------\n\n');
                     for(var key in browserStats){
                         var versionStats = browserStats[key];
                         res.write(key+':\n\n');
+                        var total = 0;
                         for(var version in versionStats){
                             res.write(version+':\t\t'+versionStats[version]+'\n');
+                            total += versionStats[version];
                         }
+                        res.write('\ntotal:\t\t'+total+'\n');
                     }
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
