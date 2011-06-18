@@ -29,7 +29,7 @@ exports.onget = function(req, res){
       
                 var barrier = new Barrier(files.length, function() {
                     console.log(browserStats);
-                    res.write(JSON.stringify({
+                    var resp = JSON.stringify({
                         status: 200,
                         error: false,
                         message: 'OK',
@@ -37,8 +37,9 @@ exports.onget = function(req, res){
                         browsers: browserStats,
                         //parserOk: parserOk,
                         parserFail: parserFail
-                    }));
-                    res.end();
+                    });
+                    console.log(resp);
+                    res.end(resp);
                 });
                 
                 
