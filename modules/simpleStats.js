@@ -20,7 +20,7 @@ exports.onget = function(req, res){
     if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
         fs.readdir(config.outputPath, function(err, files){
             if(!err){
-                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
       
                 var parserFail = [];
                 var parserOk = [];
@@ -29,17 +29,15 @@ exports.onget = function(req, res){
       
                 var barrier = new Barrier(files.length, function() {
                     console.log(browserStats);
-                    var resp = {
-                        status: 200,
-                        error: false,
-                        message: 'OK',
-                        action: 'GET /simplestats/',
-                        browsers: browserStats,
-                        //parserOk: parserOk,
-                        parserFail: parserFail
-                    };
-                    console.log(resp);
-                    res.write(JSON.stringify(resp));
+                    // output browser stats
+                    res.write('Browser Statistics:\n-----------------\n');
+                    for(var key in browserStats){
+                        var versionStats = browserStats[key];
+                        res.write(key+':\n\n');
+                        for(var version in versionStats){
+                            res.write(version+':\t\t\t'+versionStats[version]+'\n');
+                        }
+                    }
                     res.end();
                 });
                 
