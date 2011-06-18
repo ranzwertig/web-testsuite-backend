@@ -32,13 +32,13 @@ exports.onget = function(req, res){
                     res.write('Browser Statistics:\n------------------\n\n');
                     for(var key in browserStats){
                         var versionStats = browserStats[key];
-                        res.write(key+':\n\n');
+                        res.write(key+':\n');
                         var total = 0;
                         for(var version in versionStats){
                             res.write(version+':\t'+versionStats[version]+'\n');
                             total += versionStats[version];
                         }
-                        res.write('\ntotal:\t'+total+'\n');
+                        res.write('total:\t'+total+'\n\n');
                     }
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
