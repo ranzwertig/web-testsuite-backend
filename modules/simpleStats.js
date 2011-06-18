@@ -25,7 +25,7 @@ exports.onget = function(req, res){
                 var parserFail = [];
                 var parserOk = [];
                 
-                browserStats = [];
+                var browserStats = [];
       
                 var barrier = new Barrier(files.length, function() {
                     console.log(browserStats);
