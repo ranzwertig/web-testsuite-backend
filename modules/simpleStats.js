@@ -56,12 +56,10 @@ exports.onget = function(req, res){
                     barrier.commit();
                 };
                 
-                
                 for(var i = 0; i < files.length; i += 1){
                     var file = files[i];
                     fs.readFile(config.outputPath+'/'+file, processFile);
                 }
-
             }
             else{
                 res.writeHead(500, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
@@ -79,6 +77,7 @@ exports.onget = function(req, res){
         });
     }
     else{
+        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         res.end();
     }
 };
