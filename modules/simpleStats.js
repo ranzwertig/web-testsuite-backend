@@ -30,13 +30,17 @@ exports.onget = function(req, res){
                 var barrier = new Barrier(files.length, function() {
                     console.log(browserStats);
                     // output browser stats
-                    res.write('Browser Statistics:\n-----------------\n');
+                    res.write('Browser Statistics:\n------------------\n\n');
                     for(var key in browserStats){
                         var versionStats = browserStats[key];
                         res.write(key+':\n\n');
                         for(var version in versionStats){
-                            res.write(version+':\t\t\t'+versionStats[version]+'\n');
+                            res.write(version+':\t\t'+versionStats[version]+'\n');
                         }
+                    }
+                    res.write('\n\n\nParser Errors:\n--------------\n\n');
+                    for(var err in parserFail){
+                        res.write(parserFail[err].uaString+'\n');
                     }
                     res.end();
                 });
