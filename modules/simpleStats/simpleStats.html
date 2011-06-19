@@ -156,7 +156,7 @@
         $(document).ready(function(){
             $.get('/simplestats/data/', {}, function(data){
                 alert(data.message);    
-            });    
+            }, 'json');    
         });
     </script>
 </head>
