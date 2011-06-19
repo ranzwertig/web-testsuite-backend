@@ -24,6 +24,7 @@ exports.onget = function(req, res){
                 res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
       
                 var parserFail = [];
+                var useragentParserFails = 0;
                 
                 var browserStats = [];
                 var deviceStats = [];
@@ -41,6 +42,8 @@ exports.onget = function(req, res){
                         testsetstotal: testsetsTotal,
                         diffbrowsers: browsersTotal,
                         diffdevices: devicesTotal,
+                        useragentparserfails: useragentParserFails,
+                        faileduas: parserFail
                     }));
                     res.end();
                 });
@@ -56,10 +59,8 @@ exports.onget = function(req, res){
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     
                     if (typeof ua === 'undefined') {
-                        if(typeof parserFail[uaString] === 'undefined'){
-                            parserFail[uaString] = 0;
-                        }
-                        parserFail[uaString] += 1;
+                        parserFail.push(uaString);
+                        useragentParserFails += 1;
                     }    
                     else {
                         // browser stats
