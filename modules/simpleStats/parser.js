@@ -194,11 +194,7 @@ var UserAgentParser = {
             var hardware = {},
                 os = {};
             
-            if(/(Windows [^;]+);([^;]+)/.test(match[3])){
-                //var osMatch = match[3].match(/([^;]+);([^;]+)/);
-                //hardware.name = osMatch[2].trim();
-                //os.name = osMatch[1].trim();
-            }
+            // TODO: device and os parser
             
             var ret = {
                     hardware: hardware,
@@ -222,12 +218,13 @@ var UserAgentParser = {
         //      Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3 like Mac OS X; en-us) AppleWebKit/534.32 (KHTML, like Gecko) Version/5.0.2 Mobile/8F190 Safari/6533.18.5
         else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile)\/([^\s]+) (Safari)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile)\/([^\s]+) (Safari)\/([^\s]+)$/);
-            ;
+            
             var hardware = {},
                 os = {},
                 locale = ""
                 security = "";
-                
+            // iPad    
+            //      (iPad; U; CPU OS 4_3_3 like Mac OS X; de-de)
             if(/(iPad); ([^;]+); ([^;]+); ([^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/(iPad); ([^;]+); ([^;]+); ([^;]+)/);
                 hardware.name = osMatch[1].trim();
@@ -235,6 +232,8 @@ var UserAgentParser = {
                 locale = osMatch[4].trim();
                 security = osMatch[2].trim();
             }
+            // iPhone
+            //      iPhone; U; CPU iPhone OS 4_3 like Mac OS X; en-us
             else if(/(iPhone); ([^;]+); ([^;]+); ([^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/(iPhone); ([^;]+); ([^;]+); ([^;]+)/);
                 hardware.name = osMatch[1].trim();
@@ -260,7 +259,43 @@ var UserAgentParser = {
                 }
             };
         }
-		return ret;
+        // Android Safari
+        //      Mozilla/5.0 (Linux; U; Android 2.3.4; de-de; Nexus One Build/GRJ22) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        //      Mozilla/5.0 (Linux; U; Android 2.3.3; de-de; HTC_WildfireS_A510e Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+		else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/);
+            
+            var hardware = {},
+                os = {},
+                locale = ""
+                security = "";
+            // Android    
+            //      (Linux; U; Android 2.3.4; de-de; Nexus One Build/GRJ22)
+            if(/(Linux); ([^;]+); (Android[^;]+); ([^;]+); ([^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/(Linux); ([^;]+); (Android[^;]+); ([^;]+); ([^;]+)/);
+                hardware.name = osMatch[5].trim();
+                os.name = osMatch[3].trim();
+                locale = osMatch[4].trim();
+                security = osMatch[2].trim();
+            } 
+            var ret = {
+                    hardware: hardware,
+                os: os,
+                engine:{
+                    name: match[4].trim(), //     Presto,     Webkit,
+                    version: [match[5].trim()], //  2.4.15,     534.3, 533.19.4
+                    locale: locale, // de-DE, en-GB, en-de, en, de
+                    security: security, // N, U, I
+                    raw: {} // {Presto:"2.4.15", Version:"10.00"}
+                    },
+                browser:{
+                    name: match[10].trim(), //    Safari        Opera
+                    version: match[11].trim(), // 5.0.3       11.0
+                    raw: {}
+                }
+            };
+        }
+        return ret;
 	},
 	
 	_parseSlashNotation:function(s){
