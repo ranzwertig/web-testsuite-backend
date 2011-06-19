@@ -42,6 +42,7 @@ exports.onget = function(req, res){
                     }
                     
                     // output device stats
+                    res.write('\n\n\nDevice Statistics:\n------------------n\n');
                     for(var deviceKey in deviceStats){
                         var browser = deviceStats[deviceKey];
                         res.write(deviceKey+':\n');

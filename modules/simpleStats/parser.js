@@ -137,25 +137,25 @@ var UserAgentParser = {
             
             if(/(Windows [^;]+);([^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/([^;]+);([^;]+)/);
-                hardware.name = osMatch[2].trim();
+                //hardware.name = osMatch[2].trim();
                 os.name = osMatch[1].trim();
             }
             else if(/(X11); (CrOS) ([^;]+) ([^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/(X11); (CrOS) ([^;]+) ([^;]+)/);
                 os.name = osMatch[2].trim();
                 os.version = osMatch[4].trim();
-                hardware.name = osMatch[3].trim();
+                //hardware.name = osMatch[3].trim();
             }
             else if(/(X11); (Linux) ([^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/(X11); (Linux) ([^;]+)/);
                 os.name = osMatch[2].trim();
-                hardware.name = osMatch[3].trim();
+                //hardware.name = osMatch[3].trim();
             }
             else if(/(Macintosh); ([^;]+) (Mac [^;]+)/.test(match[3])){
                 var osMatch = match[3].match(/(Macintosh); ([^;]+) (Mac [^;]+)/);
                 os.name = osMatch[3].trim();
-                hardware.name = osMatch[2].trim();
-                hardware.platform = osMatch[1].trim();
+                //hardware.name = osMatch[2].trim();
+                //hardware.platform = osMatch[1].trim();
             }
             var ret = {
                     hardware: hardware,
