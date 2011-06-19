@@ -27,7 +27,8 @@ exports.onget = function(req, res){
                 
                 var browserStats = [];
                 var deviceStats = [];
-      
+                var testsetsTotal = 0;
+                
                 var barrier = new Barrier(files.length, function() {
                     // output browser stats
                     res.write(JSON.stringify({
@@ -35,9 +36,9 @@ exports.onget = function(req, res){
                         error: false,
                         message: 'OK',
                         action: 'GET /simplestats/data',
-                        testsetstotal: 0,
+                        testsetstotal: testsetsTotal,
                         diffbrowsers: browserStats.length,
-                        diffdevices: browserStats.length              
+                        diffdevices: browserStats.length,
                     }));
                     res.end();
                 });
@@ -47,6 +48,8 @@ exports.onget = function(req, res){
                     var test = JSON.parse(data);
                     var info = test.info;
                     var uaString = info["window.navigator.userAgent"];
+                    
+                    testsetsTotal += 1;
                     
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     

@@ -155,7 +155,9 @@
     <script>
         $(document).ready(function(){
             $.get('/simplestats/data/', {}, function(data){
-                alert(data.message);    
+                $('#diffbrowsers').html(data.diffbrowsers);
+                $('#diffdevices').html(data.diffdevices);
+                $('#testsetstotal').html(data.testsetstotal);
             }, 'json');    
         });
     </script>
@@ -179,7 +181,7 @@
             <div class="dia">
                 <h1>General Stats</h1>
                 <div class="st">
-                    <div class="gn fl" id="totalsubmitted">1232</div><h2 class="fl">Totally submitted testsets</h2>
+                    <div class="gn fl" id="testsetstotal">1232</div><h2 class="fl">Totally submitted testsets</h2>
                     <div class="cl"></div>
                     <div class="gn fl" id="diffbrowsers">1232</div><h2 class="fl">different browsers</h2>
                     <div class="cl"></div>
