@@ -42,7 +42,7 @@ exports.onget = function(req, res){
                     }
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
-                        res.write(err+'\n');
+                        res.write('\t'+parserFail[err]+'\t'+err+'\n');
                     }
                     res.end();
                 });
