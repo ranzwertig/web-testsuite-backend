@@ -28,6 +28,8 @@ exports.onget = function(req, res){
                 var browserStats = [];
                 var deviceStats = [];
                 var testsetsTotal = 0;
+                var devicesTotal = 0;
+                var browsersTotal = 0;
                 
                 var barrier = new Barrier(files.length, function() {
                     // output browser stats
@@ -37,8 +39,8 @@ exports.onget = function(req, res){
                         message: 'OK',
                         action: 'GET /simplestats/data',
                         testsetstotal: testsetsTotal,
-                        diffbrowsers: browserStats.length,
-                        diffdevices: browserStats.length,
+                        diffbrowsers: browsersTotal,
+                        diffdevices: devicesTotal,
                     }));
                     res.end();
                 });
@@ -63,6 +65,7 @@ exports.onget = function(req, res){
                         // browser stats
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
+                            browsersTotal += 1;
                         }
                         if(typeof browserStats[ua.browser.name][ua.browser.version] === 'undefined'){
                             browserStats[ua.browser.name][ua.browser.version] = 0;
@@ -74,6 +77,7 @@ exports.onget = function(req, res){
                         }
                         if(typeof deviceStats[ua.hardware.name] === 'undefined'){
                             deviceStats[ua.hardware.name] = [];
+                            devicesTotal += 1;
                         }
                         if(typeof deviceStats[ua.hardware.name][ua.browser.name] === 'undefined'){
                             deviceStats[ua.hardware.name][ua.browser.name] = [];
