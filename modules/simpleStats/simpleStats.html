@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WebTestsuite SimpleStats</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Anton&v1" rel="stylesheet" type="text/css">
+    <style>
+    
+        /* 
+        html5doctor.com Reset Stylesheet
+        v1.6.1
+        Last Updated: 2010-09-17
+        Author: Richard Clark - http://richclarkdesign.com
+        Twitter: @rich_clark
+        */
+        
+        html, body, div, span, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        abbr, address, cite, code,
+        del, dfn, em, img, ins, kbd, q, samp,
+        small, strong, sub, sup, var,
+        b, i,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, figcaption, figure, 
+        footer, header, hgroup, menu, nav, section, summary,
+        time, mark, audio, video {
+            margin:0;
+            padding:0;
+            border:0;
+            outline:0;
+            font-size:100%;
+            vertical-align:baseline;
+            background:transparent;
+        }
+        
+        body {
+            line-height:1;
+        }
+        
+        article,aside,details,figcaption,figure,
+        footer,header,hgroup,menu,nav,section { 
+            display:block;
+        }
+        
+        nav ul {
+            list-style:none;
+        }
+        
+        blockquote, q {
+            quotes:none;
+        }
+        
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content:'';
+            content:none;
+        }
+        
+        a {
+            margin:0;
+            padding:0;
+            font-size:100%;
+            vertical-align:baseline;
+            background:transparent;
+        }
+        
+        /* change colours to suit your needs */
+        ins {
+            background-color:#ff9;
+            color:#000;
+            text-decoration:none;
+        }
+        
+        /* change colours to suit your needs */
+        mark {
+            background-color:#ff9;
+            color:#000; 
+            font-style:italic;
+            font-weight:bold;
+        }
+        
+        del {
+            text-decoration: line-through;
+        }
+        
+        abbr[title], dfn[title] {
+            border-bottom:1px dotted;
+            cursor:help;
+        }
+        
+        table {
+            border-collapse:collapse;
+            border-spacing:0;
+        }
+        
+        /* change border colour to suit your needs */
+        hr {
+            display:block;
+            height:1px;
+            border:0;   
+            border-top:1px solid #cccccc;
+            margin:1em 0;
+            padding:0;
+        }
+        
+        input, select {
+            vertical-align:middle;
+        }
+        
+        
+        /* Styles */
+        
+        /*
+            #272625 grey
+            #221E1C textshadow grey
+            
+            #ED8511 orange
+            #4A90A4 light blue
+            #277185 medium blue
+            #185B6E dark blue
+            
+            #EAF2D9 light color for stats text
+            
+            #354C29 text h dark green
+            #405926 text dark green
+            #E6EBE0 text shadow dark green
+        */
+        .cl {clear:both;}
+        .fr {float:right;}
+        .fl {float:left;}
+        
+        body {font-family:'Helvetica', 'Arial', sans-serif;font-size: 16px;text-shadow: 0px 1px 1px #221E1C;color:#405926;background-color:#302D2C;}
+        h1, h2, h3, h4 {font-family:'Anton',arial,serif;}
+        h1 {font-size:44px;color:#354C29;text-shadow:0px 1px 1px #221E1C;margin-bottom:20px;text-transform:uppercase;}
+        
+        .wrapper {width:690px;margin:0 auto;padding:20px 0 20px 0;}
+        
+        header {background-color:#E67F17;}
+        
+        nav {height:50px;background-color:#277185;border-bottom:2px solid #185B6E;border-top:2px solid #4A90A4;box-shadow:0 0px 15px rgba(0, 0, 0, 0.5);}
+        
+        section#stats {padding:20px 0 20px 0}
+        #stats .dia {background-color:#191919;padding:20px;border:1px solid #4A90A4;box-shadow:0 0px 15px rgba(0, 0, 0, 0.5);}
+        #stats .dia h1 {font-size:24px;color:#EAF2D9;text-shadow:0px 1px 1px #221E1C;margin-bottom:30px;}
+        #stats .dia h2 {font-family:Courier, monospace !important;font-size:18px;color:#EAF2D9;text-shadow:0px 1px 1px #221E1C;margin:0;padding:35px 0 0 15px;}
+        
+        .gn {color:#7B7B7A;font-size:55px;font-family:'Anton',arial,serif;width:200px;text-align:right;}
+        /*common box styles*/
+        p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
+        p.description {font-family:'Georgia';font-size:20px;line-height: 1.4em;margin:5px 0 5px 0;}
+    </style>
+    <script>
+        $(document).ready(function(){
+            $.get('/simplestats/data/', {}, function(data){
+                alert(data.message);    
+            });    
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <h1>WebTestsuite SimpleStats</h1>
+            <p class="teaser"> 
+                The most significant numbers of the WebTestsuite summarized on a single page.
+            </p>
+            <p class="description">
+                SimpleStats is a small an lightweight statistics module running on the web-testsuite-backend.
+            </p>
+        </div>
+    </header>
+    <nav>
+    </nav>
+    <section id="stats">
+        <div class="wrapper">
+            <div class="dia">
+                <h1>General Stats</h1>
+                <div class="st">
+                    <div class="gn fl" id="totalsubmitted">1232</div><h2 class="fl">Totally submitted testsets</h2>
+                    <div class="cl"></div>
+                    <div class="gn fl" id="diffbrowsers">1232</div><h2 class="fl">different browsers</h2>
+                    <div class="cl"></div>
+                    <div class="gn fl" id="diffdevices">1232</div><h2 class="fl">different devices</h2>
+                    <div class="cl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

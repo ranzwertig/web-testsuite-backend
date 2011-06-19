@@ -13,11 +13,12 @@ var config = {
 var url = require('url'),
     UserAgentParser = require('./simpleStats/parser').UserAgentParser,
     Barrier = require('../lib/barrier').Barrier,
-    fs = require('fs');
+    fs = require('fs'),
+    util = require('util');
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
-    if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
+    if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
         fs.readdir(config.outputPath, function(err, files){
             if(!err){
                 res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
@@ -29,36 +30,15 @@ exports.onget = function(req, res){
       
                 var barrier = new Barrier(files.length, function() {
                     // output browser stats
-                    res.write('Browser Statistics:\n------------------\n\n');
-                    for(var key in browserStats){
-                        var versionStats = browserStats[key];
-                        res.write(key+':\n');
-                        var total = 0;
-                        for(var version in versionStats){
-                            res.write('\t'+version+':\t'+versionStats[version]+'\n');
-                            total += versionStats[version];
-                        }
-                        res.write('\ttotal:\t'+total+'\n\n');
-                    }
-                    
-                    // output device stats
-                    res.write('\n\n\nDevice Statistics:\n------------------\n');
-                    for(var deviceKey in deviceStats){
-                        var browser = deviceStats[deviceKey];
-                        res.write(deviceKey+':\n');
-                        for(var browserKey in browser){
-                            var version = browser[browserKey];
-                            res.write('\t'+browserKey+':\n');
-                            for(var versionKey in version){
-                                res.write('\t\t'+versionKey+':\t'+version[versionKey]+'\n');
-                            }
-                        }
-                    }
-                    
-                    res.write('\n\n\nParser Errors:\n--------------\n\n');
-                    for(var err in parserFail){
-                        res.write(' '+parserFail[err]+'\t'+err+'\n');
-                    }
+                    res.write(JSON.stringify({
+                        status: 200,
+                        error: false,
+                        message: 'OK',
+                        action: 'GET /simplestats/data',
+                        testsetstotal: 0,
+                        diffbrowsers: browserStats.length,
+                        diffdevices: browserStats.length              
+                    }));
                     res.end();
                 });
                 
@@ -121,6 +101,19 @@ exports.onget = function(req, res){
                 res.end();
             }
             
+        });
+    }
+    // output the simpleStats html
+    else if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
+        var readStream = fs.createReadStream('./modules/simpleStats/simpleStats.html');
+        util.pump(readStream, res, function(){
+            res.writeHead(500);    
+            res.end();
+            return;
+        });
+        readStream.on('end', function(){
+            res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
+            res.end();
         });
     }
     else{
