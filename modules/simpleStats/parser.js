@@ -295,6 +295,40 @@ var UserAgentParser = {
                 }
             };
         }
+        // RIM Playbook Safari
+        //      Mozilla/5.0 (PlayBook; U; RIM Tablet OS 1.0.0; en-US) AppleWebKit/534.8+ (KHTML, like Gecko) Version/0.0.1 Safari/534.8+
+    	else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Safari)\/([^\s]+)$/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Safari)\/([^\s]+)$/);
+            var hardware = {},
+                os = {},
+                locale = ""
+                security = "";
+            // RIM PlayBook    
+            //      (PlayBook; U; RIM Tablet OS 1.0.0; en-US)
+            if(/(PlayBook); ([^;]+); (RIM [^;]+); ([^;]+)/.test(match[3])){
+                var osMatch = match[3].match(/(PlayBook); ([^;]+); (RIM [^;]+); ([^;]+)/);
+                hardware.name = osMatch[1].trim();
+                os.name = osMatch[3].trim();
+                locale = osMatch[4].trim();
+                security = osMatch[2].trim();
+            } 
+            var ret = {
+                    hardware: hardware,
+                os: os,
+                engine:{
+                    name: match[4].trim(), //     Presto,     Webkit,
+                    version: [match[5].trim()], //  2.4.15,     534.3, 533.19.4
+                    locale: locale, // de-DE, en-GB, en-de, en, de
+                    security: security, // N, U, I
+                    raw: {} // {Presto:"2.4.15", Version:"10.00"}
+                    },
+                browser:{
+                    name: match[9].trim(), //    Safari        Opera
+                    version: match[10].trim(), // 5.0.3       11.0
+                    raw: {}
+                }
+            };
+        }
         return ret;
 	},
 	
