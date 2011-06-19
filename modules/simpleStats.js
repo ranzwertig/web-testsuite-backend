@@ -59,8 +59,10 @@ exports.onget = function(req, res){
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     
                     if (typeof ua === 'undefined') {
-                        parserFail.push(uaString);
-                        useragentParserFails += 1;
+                        if(parserFail.indexOf(uaString) > -1){
+                            parserFail.push(uaString);
+                            useragentParserFails += 1;
+                        }
                     }    
                     else {
                         // browser stats
