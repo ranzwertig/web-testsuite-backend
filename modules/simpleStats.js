@@ -23,9 +23,9 @@ exports.onget = function(req, res){
                 res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
       
                 var parserFail = [];
-                var parserOk = [];
                 
                 var browserStats = [];
+                var deviceStats = [];
       
                 var barrier = new Barrier(files.length, function() {
                     // output browser stats
@@ -40,6 +40,20 @@ exports.onget = function(req, res){
                         }
                         res.write('\ttotal:\t'+total+'\n\n');
                     }
+                    
+                    // output device stats
+                    for(var deviceKey in deviceStats){
+                        var browser = deviceStats[deviceKey];
+                        res.write(deviceKey+':\n');
+                        for(var browserKey in browser){
+                            var version = browser[browserKey];
+                            res.write('\t'+browserKey+':\n');
+                            for(var versionKey in version){
+                                res.write('\t\t'+versionKey+':\t'+version[versionKey]+'\n');
+                            }
+                        }
+                    }
+                    
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
                         res.write(' '+parserFail[err]+'\t'+err+'\n');
@@ -62,9 +76,7 @@ exports.onget = function(req, res){
                         parserFail[uaString] += 1;
                     }    
                     else {
-                        parserOk.push({
-                            uaString: uaString
-                        });
+                        // browser stats
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
                         }
@@ -72,6 +84,20 @@ exports.onget = function(req, res){
                             browserStats[ua.browser.name][ua.browser.version] = 0;
                         }
                         browserStats[ua.browser.name][ua.browser.version] += 1;
+                        // device stats
+                        if(typeof ua.hardware.name === 'undefined'){
+                            ua.hardware.name = 'Other'
+                        }
+                        if(typeof deviceStats[ua.hardware.name] === 'undefined'){
+                            deviceStats[ua.hardware.name] = [];
+                        }
+                        if(typeof deviceStats[ua.hardware.name][ua.browser.name] === 'undefined'){
+                            deviceStats[ua.hardware.name][ua.browser.name] = [];
+                        }
+                        if(typeof deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] === 'undefined'){
+                            deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] = 0;
+                        }
+                        deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] += 1;
                     }
                     barrier.commit();
                 };
