@@ -42,7 +42,7 @@ exports.onget = function(req, res){
                     }
                     res.write('\n\n\nParser Errors:\n--------------\n\n');
                     for(var err in parserFail){
-                        res.write(parserFail[err].uaString+'\n');
+                        res.write(err+'\n');
                     }
                     res.end();
                 });
@@ -56,10 +56,10 @@ exports.onget = function(req, res){
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     
                     if (typeof ua === 'undefined') {
-                        parserFail.push({
-                            uaString: uaString,
-                            parserOutput: 'undefined'
-                        });
+                        if(typeof parserFail[uaString] === 'undefined'){
+                            parserFail[uaString] = 0;
+                        }
+                        parserFail[uaString] += 1;
                     }    
                     else {
                         parserOk.push({
