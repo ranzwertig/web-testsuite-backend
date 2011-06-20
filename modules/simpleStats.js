@@ -71,7 +71,7 @@ setInterval(function(){
                     failedtests: failedTests,
                     errortests: errorTests,
                     notapptests: notAppTests,
-                    totaltests: succeededTests+failedTests+noResult
+                    totaltests: succeededTests + failedTests + errorTests + notAppTests
                 });
             });
             
