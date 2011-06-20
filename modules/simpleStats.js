@@ -39,6 +39,7 @@ setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
+            var userAgents = [];
             var useragentParserFails = 0;
             
             var browserStats = {};
@@ -73,7 +74,8 @@ setInterval(function(){
                     errortests: errorTests,
                     notapptests: notAppTests,
                     totaltests: succeededTests + failedTests + errorTests + notAppTests,
-                    browserranking: browserRanking
+                    browserranking: browserRanking,
+                    useragents: userAgents
                 });
             });
             
@@ -88,6 +90,10 @@ setInterval(function(){
                     testsetsTotal += 1;
                     
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
+                    
+                    if(userAgents.indexOf(uaString) === -1){
+                        userAgents.push(uaString);    
+                    }
                     
                     if (typeof ua === 'undefined') {
                         if(parserFail.indexOf(uaString) === -1){
