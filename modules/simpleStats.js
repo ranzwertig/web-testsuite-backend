@@ -9,7 +9,7 @@ var config = {
     outputPath: '/var/web-testsuite-results',
     
     // configure the cron cycle in seconds
-    cronCycle: 3
+    cronCycle: 30
 };
 // config section end
  
@@ -19,11 +19,10 @@ var url = require('url'),
     fs = require('fs'),
     util = require('util');
 
-// generate stats every x seconds
+// cache for stats
 var cache = '';
-
+// generate stats every x seconds
 setInterval(function(){
-	console.log('generate stats');
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
@@ -120,8 +119,8 @@ setInterval(function(){
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
-    	console.log('from cache');
     	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+    	// send stats from cache to client
     	res.write(cache);
     	res.end();
     }
