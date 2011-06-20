@@ -251,7 +251,7 @@
                 }
                 rankedBrowsers.sort(function(a,b){return b.score - a.score});
                 for(var i = 0; i < rankedBrowsers.length; i += 1){
-                	$('#browserranking').append('<li>'+(i+1)+':'+rankedBrowsers[i].name'</li>');
+                	$('#browserranking').append('<li>'+(i+1)+':'+rankedBrowsers[i].name+'</li>');
                 }
             }, 'json');    
         });
