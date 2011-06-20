@@ -185,7 +185,8 @@
         .gn {color:#EAF2D9;font-size:55px;font-family:'Anton',arial,serif;width:200px;text-align:right;}
         ul.errlist {list-style-type:none;}
         ul.errlist li {margin:0; background-color:#A33D29;color:#EAF2D9;padding:5px;margin:2px 0 2px 0;font-size:12px;}
-        
+        ul.list {ist-style-type:none;}
+        ul.list li {color:#EAF2D9;}
         /*common box styles*/
         p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
         p.description {font-family:'Georgia';font-size:20px;line-height: 1.4em;margin:5px 0 5px 0;}
@@ -206,7 +207,7 @@
                 // devices
                 var devlist = data.devices; 
                 for(var dev in devlist){
-                    $('#faileduas').append('<li>'+devlist[dev]+'</li>')
+                    $('#devlist').append('<li>'+devlist[dev]+'</li>')
                 }
             }, 'json');    
         });
@@ -261,7 +262,7 @@
             <div class="dia">
                 <h1>Tested Devices</h1>
                 <div class="st">
-                    <ul class="errlist" id="devicelist">
+                    <ul class="list" id="devicelist">
 
                     </ul>
                 </div>
