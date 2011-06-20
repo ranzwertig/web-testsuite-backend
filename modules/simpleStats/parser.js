@@ -189,7 +189,6 @@ var UserAgentParser = {
         //      Mozilla/5.0 (Windows NT 5.2; rv:2.0b13pre) Gecko/20110304 Firefox/4.0b13pre
         else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/);
-            console.log(match);
             
             var hardware = {},
                 os = {};
