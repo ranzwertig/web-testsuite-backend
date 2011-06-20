@@ -127,7 +127,6 @@ setInterval(function(){
 							notAppTests += 1;
 						}
                     	else{
-                    		console.log(singleTest.result);
                     		errorTests += 1;
                     	}
                     }
