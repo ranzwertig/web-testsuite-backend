@@ -251,7 +251,7 @@
                 }
                 rankedBrowsers.sort(function(a,b){return b.score - a.score});
                 for(var i = 0; i < rankedBrowsers.length; i += 1){
-                	$('#browserranking').append('<li>'+(i+1)+':'+rankedBrowsers[i].name+'</li>');
+                	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: '+rankedBrowsers[i].total+'</div><div class="fl item success">Success: '+rankedBrowsers[i].success+'</div><div class="fl item error">failed: '+rankedBrowsers[i].failed+'</div><div class="fl item">error: '+rankedBrowsers[i].error+'</div><div class="cl"></div></li>\n');
                 }
             }, 'json');    
         });
