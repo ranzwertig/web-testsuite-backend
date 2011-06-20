@@ -155,20 +155,7 @@ setInterval(function(){
                     }
                     barrier.commit();
                 }catch(error){
-                	cache = JSON.stringify({
-            		    status: 500,
-            		    error: true,
-            		    message: 'ERROR',
-            		    action: 'GET /simplestats/data',
-            		    testsetstotal: 0,
-            		    diffbrowsers: 0,
-            		    diffdevices: 0,
-            		    useragentparserfails: 0,
-            		    faileduas: [],
-            		    diffbrowserversions: 0,
-            		    devices: [],
-            		    browsers: []
-            		});
+                	// error processing file
                 }
             };
             
