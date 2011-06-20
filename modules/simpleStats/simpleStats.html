@@ -215,7 +215,8 @@
                 $('#succeededtests').html(data.succeededtests);
                 $('#failedtests').html(data.failedtests);
                 $('#totaltests').html(data.totaltests);
-                $('#noresult').html(data.noresult);
+                $('#notapptests').html(data.notapptests);
+                $('#errortests').html(data.errortests);
                 succeededtests
                 var faileduas = data.faileduas; 
                 for(var ua in faileduas){
@@ -317,7 +318,9 @@
                     <div class="cl"></div>
                     <div class="gn fl error" id="failedtests">0</div><h2 class="fl">failed tests</h2>
                     <div class="cl"></div>
-                    <div class="gn fl nothing" id="noresult">0</div><h2 class="fl">tests without a result</h2>
+                    <div class="gn fl nothing" id="errortests">0</div><h2 class="fl">errors in tests</h2>
+                    <div class="cl"></div>
+                    <div class="gn fl nothing" id="notapptests">0</div><h2 class="fl">not applicable tests</h2>
                     <div class="cl"></div>
                 </div>
             </div>

@@ -49,7 +49,8 @@ setInterval(function(){
             var browsersVersionsTotal = 0;
             var failedTests = 0;
             var succeededTests = 0;
-            var noResult = 0;
+            var errorTests = 0;
+            var notAppTests = 0;
             
             var barrier = new Barrier(files.length, function() {
                 // cache the stats
@@ -68,7 +69,8 @@ setInterval(function(){
                     browsers: browserStats,
                     succeededtests: succeededTests,
                     failedtests: failedTests,
-                    noresult: noResult,
+                    errortests: errorTests,
+                    notapptests: notAppTests,
                     totaltests: succeededTests+failedTests+noResult
                 });
             });
@@ -121,9 +123,12 @@ setInterval(function(){
 						else if(singleTest.result === 'failure'){
 							failedTests += 1;
 						}
+						else if(singleTest.result === 'not applicable'){
+							notAppTests += 1;
+						}
                     	else{
                     		console.log(singleTest.result);
-                    		noResult += 1;
+                    		errorTests += 1;
                     	}
                     }
                     barrier.commit();
