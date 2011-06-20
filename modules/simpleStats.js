@@ -82,7 +82,7 @@ exports.onget = function(req, res){
                         if(typeof ua.hardware.name === 'undefined'){
                             ua.hardware.name = 'Other'
                         }
-                        if(deviceStats.indexOf(uaString) === -1){
+                        if(deviceStats.indexOf(ua.hardware.name) === -1){
                             deviceStats.push(ua.hardware.name);
                             devicesTotal += 1;
                         }
