@@ -217,7 +217,7 @@
                 $('#totaltests').html(data.totaltests);
                 $('#notapptests').html(data.notapptests);
                 $('#errortests').html(data.errortests);
-                succeededtests
+                
                 var faileduas = data.faileduas; 
                 for(var ua in faileduas){
                     $('#faileduas').append('<li>'+faileduas[ua]+'</li>')
@@ -238,7 +238,14 @@
                 	innerList += '<div class="cl"></div>\n';
                     $('#browserlist').append('<li><h3>'+br+'</h3>'+innerList+'</li>');
                 }
-                
+                // browserranking
+                var rankedBrowsers = [];
+                var browserranking = data.browserranking;
+                for(var browserName in browserranking){
+                	var brStats = browserranking[browserName];
+                	var brScore = ( brStats.success / ( brStats.failed + brStats.error ) ) * brStats.total;
+                	alert(browserName + ' ' + brScore);
+                }
             }, 'json');    
         });
     </script>
@@ -308,7 +315,7 @@
                 </div>
             </div>
             
-            <!-- Devices tested -->
+            <!-- General test stats -->
             <div class="dia">
                 <h1>General Test Stats</h1>
                 <div class="st">
@@ -322,6 +329,16 @@
                     <div class="cl"></div>
                     <div class="gn fl nothing" id="notapptests">0</div><h2 class="fl">not applicable tests</h2>
                     <div class="cl"></div>
+                </div>
+            </div>
+            
+            <!-- Browser tests stats -->
+            <div class="dia">
+                <h1>Browser Ranking</h1>
+                <div class="st">
+                    <ul class="list" id="browserranking">
+					
+                    </ul>
                 </div>
             </div>
             
