@@ -74,7 +74,7 @@ exports.onget = function(req, res){
                             browserStats[ua.browser.name] = {};
                             browsersTotal += 1;
                         }
-                        if(browserStats[ua.browser.name].indexOf(ua.browser.version) === -1){
+                        if(typeof browserStats[ua.browser.name][ua.browser.version] === 'undefined'){
                             browserStats[ua.browser.name].push(ua.browser.version);
                             browsersVersionsTotal += 1;
                         }
