@@ -214,7 +214,13 @@
                 // browsers
                 var brlist = data.browsers; 
                 for(var br in brlist){
-                    $('#browserlist').append('<li>'+br+'</li>')
+                	var innerList = '<ul>';
+                	var brows = brlist[br];
+                	for(var version in brows){
+                		innerList += '<li>'+brows[version]+'</li>\n'
+                	}
+                	innerList += '</ul>\n';
+                    $('#browserlist').append('<li><span>'+br+'</span>'+innerList+'</li>');
                 }
                 
             }, 'json');    
