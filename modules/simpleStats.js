@@ -23,6 +23,7 @@ var url = require('url'),
 var cache = '';
 
 setInterval(function(){
+	console.log('generate stats');
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
@@ -119,6 +120,7 @@ setInterval(function(){
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
+    	console.log('from cache');
     	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     	res.write(cache);
     	res.end();
