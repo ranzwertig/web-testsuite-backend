@@ -112,7 +112,7 @@ setInterval(function(){
                 faileduas: [],
                 diffbrowserversions: 0,
                 devices: [],
-                browsers: []‚
+                browsers: []
             });
         }  
     });   
