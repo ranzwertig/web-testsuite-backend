@@ -245,12 +245,14 @@
                 	var brStats = browserranking[browserName];
                 	var brScore = ( brStats.success / ( brStats.failed + brStats.error + 1 ) );
                 	rankedBrowsers.push({
-                		browser: browserName,
+                		name: browserName,
                 		score: brScore
                 	});
                 }
                 rankedBrowsers.sort(function(a,b){return b.score - a.score});
-                console.log(rankedBrowsers);
+                for(var i = 0; i < rankedBrowsers.length; i += 1){
+                	$('#browserranking').append('<li><h3>'+rankedBrowsers[i].name+'</h3></li>');
+                }
             }, 'json');    
         });
     </script>
