@@ -193,6 +193,7 @@ exports.onget = function(req, res){
     }
     // output the simpleStats html
     else if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
         var readStream = fs.createReadStream('./modules/simpleStats/simpleStats.html');
         util.pump(readStream, res, function(){
             res.writeHead(500);    
@@ -200,7 +201,6 @@ exports.onget = function(req, res){
             return;
         });
         readStream.on('end', function(){
-            res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
             res.end();
         });
     }
