@@ -68,7 +68,8 @@ setInterval(function(){
                     browsers: browserStats,
                     succeededtests: succeededTests,
                     failedtests: failedTests,
-                    noresult: noResult
+                    noresult: noResult,
+                    totaltests: succeededTests+failedTests+noResult
                 });
             });
             
