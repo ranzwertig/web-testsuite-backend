@@ -214,7 +214,7 @@
                 $.get('/simplestats/data/', {}, function(data){
                     if(data.status === 200){
                         // remove error
-                        $('#errorfetchingdata').removeClass('hd');
+                        $('#errorfetchingdata').addClass('hd');
                         // stats available
                         $('#diffbrowsers').html(data.diffbrowsers);
                         $('#diffdevices').html(data.diffdevices);
@@ -273,13 +273,13 @@
                         // generating stats
                         setTimeout(getStats, 60*1000);
                         $('#errorfetchingdata').html('The Backend is currently processing data. Stats should be available in 60 seconds!');
-                        $('#errorfetchingdata').addClass('hd');
+                        $('#errorfetchingdata').removeClass('hd');
                     }
                     else if(data.status === 500){
                         // an unknown error occured in the backend
                         setTimeout(getStats, 60*1000);
                         $('#errorfetchingdata').html('There was an error in the backend. Please try again later or file an issue on github.');
-                        $('#errorfetchingdata').addClass('hd');
+                        $('#errorfetchingdata').removeClass('hd');
                     }
                 }, 'json');    
             };
