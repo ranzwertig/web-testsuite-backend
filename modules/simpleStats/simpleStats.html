@@ -214,7 +214,7 @@
                 $.get('/simplestats/data/', {}, function(data){
                     if(data.status === 200){
                         // remove error
-                        $('#errorfetchingdata').toggleClass('hd');
+                        $('#errorfetchingdata').removeClass('hd');
                         // stats available
                         $('#diffbrowsers').html(data.diffbrowsers);
                         $('#diffdevices').html(data.diffdevices);
