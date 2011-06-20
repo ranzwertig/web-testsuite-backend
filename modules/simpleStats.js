@@ -26,7 +26,7 @@ exports.onget = function(req, res){
                 var parserFail = [];
                 var useragentParserFails = 0;
                 
-                var browserStats = [];
+                var browserStats = {};
                 var deviceStats = [];
                 var testsetsTotal = 0;
                 var devicesTotal = 0;
@@ -71,7 +71,7 @@ exports.onget = function(req, res){
                     else {
                         // browser stats
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
-                            browserStats[ua.browser.name] = [];
+                            browserStats[ua.browser.name] = {};
                             browsersTotal += 1;
                         }
                         if(browserStats[ua.browser.name].indexOf(ua.browser.version) === -1){
