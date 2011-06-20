@@ -197,7 +197,7 @@
         ul.list {list-style-type:none;}
         ul.list li {margin:0;background-color:#5c5c5c;color:#EAF2D9;padding:5px;margin:2px 0 2px 0;font-size:12px;}
         
-        .item {background-color:#444;padding:3px;margin:2px;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5);}
+        .item {background-color:#444;padding:3px;margin:2px;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5);font-weight:bold;}
         
         /*common box styles*/
         p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
@@ -252,7 +252,7 @@
                 }
                 rankedBrowsers.sort(function(a,b){return b.score - a.score});
                 for(var i = 0; i < rankedBrowsers.length; i += 1){
-                	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: <b>'+rankedBrowsers[i].stats.total+'</b></div><div class="fl item success">Success: <b>'+rankedBrowsers[i].stats.success+'</b></div><div class="fl item error">failed: <b>'+rankedBrowsers[i].stats.failed+'</b></div><div class="fl item">error: <b>'+rankedBrowsers[i].stats.error+'</b></div><div class="cl"></div></li>\n');
+                	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: '+rankedBrowsers[i].stats.total+'</div><div class="fl item success">Success: '+rankedBrowsers[i].stats.success+'</div><div class="fl item error">failed: '+rankedBrowsers[i].stats.failed+'</div><div class="fl item">error: '+rankedBrowsers[i].stats.error+'</div><div class="cl"></div></li>\n');
                 }
             }, 'json');    
         });
