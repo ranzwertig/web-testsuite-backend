@@ -45,7 +45,8 @@ exports.onget = function(req, res){
                         diffdevices: devicesTotal,
                         useragentparserfails: useragentParserFails,
                         faileduas: parserFail,
-                        diffbrowserversions: browsersVersionsTotal
+                        diffbrowserversions: browsersVersionsTotal,
+                        devices: deviceStats
                     }));
                     res.end();
                 });
@@ -81,17 +82,10 @@ exports.onget = function(req, res){
                         if(typeof ua.hardware.name === 'undefined'){
                             ua.hardware.name = 'Other'
                         }
-                        if(typeof deviceStats[ua.hardware.name] === 'undefined'){
-                            deviceStats[ua.hardware.name] = [];
+                        if(deviceStats.indexOf(uaString) === -1){
+                            deviceStats.push(ua.hardware.name);
                             devicesTotal += 1;
                         }
-                        if(typeof deviceStats[ua.hardware.name][ua.browser.name] === 'undefined'){
-                            deviceStats[ua.hardware.name][ua.browser.name] = [];
-                        }
-                        if(typeof deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] === 'undefined'){
-                            deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] = 0;
-                        }
-                        deviceStats[ua.hardware.name][ua.browser.name][ua.browser.version] += 1;
                     }
                     barrier.commit();
                 };
