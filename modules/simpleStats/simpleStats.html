@@ -244,8 +244,13 @@
                 for(var browserName in browserranking){
                 	var brStats = browserranking[browserName];
                 	var brScore = ( brStats.success / ( brStats.failed + brStats.error + 1 ) );
-                	alert(browserName + ' ' + brScore);
+                	rankedBrowsers.push({
+                		browser: browserName,
+                		score: brScore
+                	});
                 }
+                rankedBrowsers.sort(function(a,b){return b.score - a.score});
+                console.log(rankedBrowsers);
             }, 'json');    
         });
     </script>
