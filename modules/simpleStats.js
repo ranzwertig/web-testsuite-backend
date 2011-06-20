@@ -9,7 +9,7 @@ var config = {
     outputPath: '/var/web-testsuite-results',
     
     // configure the cron cycle in seconds
-    cronCycle: 10
+    cronCycle: 3
 };
 // config section end
  
@@ -24,9 +24,7 @@ var cache = '';
 
 setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
-        if(!err){
-            res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
-      
+        if(!err){    
             var parserFail = [];
             var useragentParserFails = 0;
             
