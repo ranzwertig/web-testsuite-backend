@@ -165,6 +165,7 @@
         .cl {clear:both;}
         .fr {float:right;}
         .fl {float:left;}
+        .hd {display:none;}
         
         body {font-family:'Helvetica', 'Arial', sans-serif;font-size: 16px;text-shadow: 0px 1px 1px #221E1C;color:#405926;background-color:#302D2C;}
         h1, h2, h3, h4 {font-family:'Anton',arial,serif;}
@@ -202,64 +203,89 @@
         /*common box styles*/
         p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
         p.description {font-family:'Georgia';font-size:20px;line-height: 1.4em;margin:5px 0 5px 0;}
+        
+        .berror {background-color:#A33D29 !important;}
     </style>
     <script>
         $(document).ready(function(){
-            // get the data from the backend
-            $.get('/simplestats/data/', {}, function(data){
-                $('#diffbrowsers').html(data.diffbrowsers);
-                $('#diffdevices').html(data.diffdevices);
-                $('#testsetstotal').html(data.testsetstotal);
-                $('#useragentparserfails').html(data.useragentparserfails);
-                $('#diffbrowserversions').html(data.diffbrowserversions);
-                $('#succeededtests').html(data.succeededtests);
-                $('#failedtests').html(data.failedtests);
-                $('#totaltests').html(data.totaltests);
-                $('#notapptests').html(data.notapptests);
-                $('#errortests').html(data.errortests);
-                
-                var faileduas = data.faileduas; 
-                for(var fua in faileduas){
-                    $('#faileduas').append('<li>'+faileduas[fua]+'</li>')
-                }
-                // devices
-                var devlist = data.devices; 
-                for(var dev in devlist){
-                    $('#devicelist').append('<li>'+devlist[dev]+'</li>')
-                }
-                // useragents
-                var useragents = data.useragents; 
-                for(var ua in useragents){
-                    $('#useragentlist').append('<li>'+useragents[ua]+'</li>')
-                }
-                // browsers
-                var brlist = data.browsers; 
-                for(var br in brlist){
-                	var innerList = '';
-                	var brows = brlist[br];
-                	for(var version in brows){
-                		innerList += '<div class="fl item">'+brows[version]+'</div>\n'
-                	}
-                	innerList += '<div class="cl"></div>\n';
-                    $('#browserlist').append('<li><h3>'+br+'</h3>'+innerList+'</li>');
-                }
-                // browserranking
-                var rankedBrowsers = [];
-                var browserranking = data.browserranking;
-                for(var browserName in browserranking){
-                	var brStats = browserranking[browserName];
-                	var brScore = ( brStats.success / ( brStats.failed + brStats.error + 1 ) );
-                	rankedBrowsers.push({
-                		name: browserName,
-                		score: brScore,
-                		stats: brStats
-                	});
-                }
-                rankedBrowsers.sort(function(a,b){return b.score - a.score});
-                for(var i = 0; i < rankedBrowsers.length; i += 1){
-                	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: '+rankedBrowsers[i].stats.total+'</div><div class="fl item success">Success: '+rankedBrowsers[i].stats.success+'</div><div class="fl item error">failed: '+rankedBrowsers[i].stats.failed+'</div><div class="fl item">error: '+rankedBrowsers[i].stats.error+'</div><div class="cl"></div></li>\n');
-                }
-            }, 'json');    
+            
+            var getStats = function(){
+                // get the data from the backend
+                $.get('/simplestats/data/', {}, function(data){
+                    if(data.status === 200){
+                        // remove error
+                        $('#errorfetchingdata').toggleClass('hd');
+                        // stats available
+                        $('#diffbrowsers').html(data.diffbrowsers);
+                        $('#diffdevices').html(data.diffdevices);
+                        $('#testsetstotal').html(data.testsetstotal);
+                        $('#useragentparserfails').html(data.useragentparserfails);
+                        $('#diffbrowserversions').html(data.diffbrowserversions);
+                        $('#succeededtests').html(data.succeededtests);
+                        $('#failedtests').html(data.failedtests);
+                        $('#totaltests').html(data.totaltests);
+                        $('#notapptests').html(data.notapptests);
+                        $('#errortests').html(data.errortests);
+                        
+                        var faileduas = data.faileduas; 
+                        for(var fua in faileduas){
+                            $('#faileduas').append('<li>'+faileduas[fua]+'</li>')
+                        }
+                        // devices
+                        var devlist = data.devices; 
+                        for(var dev in devlist){
+                            $('#devicelist').append('<li>'+devlist[dev]+'</li>')
+                        }
+                        // useragents
+                        var useragents = data.useragents; 
+                        for(var ua in useragents){
+                            $('#useragentlist').append('<li>'+useragents[ua]+'</li>')
+                        }
+                        // browsers
+                        var brlist = data.browsers; 
+                        for(var br in brlist){
+                            var innerList = '';
+                        	var brows = brlist[br];
+                        	for(var version in brows){
+                        		innerList += '<div class="fl item">'+brows[version]+'</div>\n'
+                        	}
+                        	innerList += '<div class="cl"></div>\n';
+                            $('#browserlist').append('<li><h3>'+br+'</h3>'+innerList+'</li>');
+                        }
+                        // browserranking
+                        var rankedBrowsers = [];
+                        var browserranking = data.browserranking;
+                        for(var browserName in browserranking){
+                        	var brStats = browserranking[browserName];
+                        	var brScore = ( brStats.success / ( brStats.failed + brStats.error + 1 ) );
+                        	rankedBrowsers.push({
+                        		name: browserName,
+                        		score: brScore,
+                        		stats: brStats
+                        	});
+                        }
+                        rankedBrowsers.sort(function(a,b){return b.score - a.score});
+                        for(var i = 0; i < rankedBrowsers.length; i += 1){
+                        	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: '+rankedBrowsers[i].stats.total+'</div><div class="fl item success">Success: '+rankedBrowsers[i].stats.success+'</div><div class="fl item error">failed: '+rankedBrowsers[i].stats.failed+'</div><div class="fl item">error: '+rankedBrowsers[i].stats.error+'</div><div class="cl"></div></li>\n');
+                        }
+                    }
+                    else if(data.status === 204){
+                        // generating stats
+                        setTimeout(getStats, 60*1000);
+                        $('#errorfetchingdata').html('The Backend is currently processing data. Stats should be available in 60 seconds!');
+                        $('#errorfetchingdata').toggleClass('hd');
+                    }
+                    else if(data.status === 500){
+                        // an unknown error occured in the backend
+                        setTimeout(getStats, 60*1000);
+                        $('#errorfetchingdata').html('There was an error in the backend. Please try again later or file an issue on github.');
+                        $('#errorfetchingdata').toggleClass('hd');
+                    }
+                }, 'json');    
+            };
+            
+            // fetch stats after page loaded
+            getStats();
         });
     </script>
 </head>
@@ -291,6 +317,11 @@
     </nav>
     <section id="stats">
         <div class="wrapper">
+            <!-- error fetching stats -->
+            <div class="dia berror hd" id="errorfetchingdata">
+                
+            </div>
+            
             <!-- General statistics -->
             <div class="dia">
                 <h1>General Stats</h1>
