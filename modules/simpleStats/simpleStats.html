@@ -219,13 +219,18 @@
                 $('#errortests').html(data.errortests);
                 
                 var faileduas = data.faileduas; 
-                for(var ua in faileduas){
-                    $('#faileduas').append('<li>'+faileduas[ua]+'</li>')
+                for(var fua in faileduas){
+                    $('#faileduas').append('<li>'+faileduas[fua]+'</li>')
                 }
                 // devices
                 var devlist = data.devices; 
                 for(var dev in devlist){
                     $('#devicelist').append('<li>'+devlist[dev]+'</li>')
+                }
+                // useragents
+                var useragents = data.useragents; 
+                for(var ua in useragents){
+                    $('#useragentlist').append('<li>'+devlist[dev]+'</li>')
                 }
                 // browsers
                 var brlist = data.browsers; 
@@ -350,11 +355,21 @@
                 </div>
             </div>
             
-            <!-- Useragend parser fails -->
+            <!-- Useragent parser fails -->
             <div class="dia">
                 <h1>UserAgent Parser fails</h1>
                 <div class="st">
                     <ul class="errlist" id="faileduas">
+
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- different Useragents -->
+            <div class="dia">
+                <h1>different useragent strings</h1>
+                <div class="st">
+                    <ul class="list" id="useragentlist">
 
                     </ul>
                 </div>
