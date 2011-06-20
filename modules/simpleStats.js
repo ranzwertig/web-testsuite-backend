@@ -9,7 +9,7 @@ var config = {
     outputPath: '/var/web-testsuite-results',
     
     // configure the cron cycle in seconds
-    cronCycle: 60
+    cronCycle: 3
 };
 // config section end
  
