@@ -47,6 +47,9 @@ setInterval(function(){
             var devicesTotal = 0;
             var browsersTotal = 0;
             var browsersVersionsTotal = 0;
+            var failedTests = 0;
+            var succeededTests = 0;
+            var noResult = 0;
             
             var barrier = new Barrier(files.length, function() {
                 // cache the stats
@@ -62,7 +65,10 @@ setInterval(function(){
                     faileduas: parserFail,
                     diffbrowserversions: browsersVersionsTotal,
                     devices: deviceStats,
-                    browsers: browserStats
+                    browsers: browserStats,
+                    succeededtests: succeededTests,
+                    failedtests: failedTests,
+                    noresult: noResult
                 });
             });
             
@@ -71,6 +77,7 @@ setInterval(function(){
             	try{
                     var test = JSON.parse(data);
                     var info = test.info;
+                    var tests = test.tests;
                     var uaString = info["window.navigator.userAgent"];
                     
                     testsetsTotal += 1;
@@ -102,6 +109,20 @@ setInterval(function(){
                             deviceStats.push(ua.hardware.name);
                             devicesTotal += 1;
                         }
+                    }
+                    
+                    // process tests
+                    for(var index = 0; index < tests.length; index += 1){
+                    	var singleTest = tests[index];
+                    	if(singleTest.result === 'success'){
+							succeededTests += 1;
+						}
+						else if(singleTest.result === 'failure'){
+							failedTests += 1;
+						}
+                    	else{
+                    		noResult += 1;
+                    	}
                     }
                     barrier.commit();
                 }catch(error){
