@@ -51,6 +51,7 @@ setInterval(function(){
             var succeededTests = 0;
             var errorTests = 0;
             var notAppTests = 0;
+            var browserRanking = {};
             
             var barrier = new Barrier(files.length, function() {
                 // cache the stats
@@ -71,7 +72,8 @@ setInterval(function(){
                     failedtests: failedTests,
                     errortests: errorTests,
                     notapptests: notAppTests,
-                    totaltests: succeededTests + failedTests + errorTests + notAppTests
+                    totaltests: succeededTests + failedTests + errorTests + notAppTests,
+                    browserranking: browserRanking
                 });
             });
             
@@ -115,19 +117,34 @@ setInterval(function(){
                     }
                     
                     // process tests
+                    if(typeof browserRanking[ua.browser.name] === 'undefined'){
+                    	browserRanking[ua.browser.name] = {
+                    		failed: 0,
+                    		success: 0,
+                    		error: 0,
+                    		notapp: 0,
+                    		total: 0
+                    	};
+                    }
+                    
                     for(var index = 0; index < tests.length; index += 1){
                     	var singleTest = tests[index];
+                    	browserRanking[ua.browser.name].total += 1;
                     	if(singleTest.result === 'success'){
 							succeededTests += 1;
+							browserRanking[ua.browser.name].success += 1;
 						}
 						else if(singleTest.result === 'failure'){
 							failedTests += 1;
+							browserRanking[ua.browser.name].failed += 1;
 						}
 						else if(singleTest.result === 'not applicable'){
 							notAppTests += 1;
+							browserRanking[ua.browser.name].notapp += 1;
 						}
                     	else{
                     		errorTests += 1;
+                    		browserRanking[ua.browser.name].error += 1;
                     	}
                     }
                     barrier.commit();
