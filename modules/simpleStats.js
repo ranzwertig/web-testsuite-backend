@@ -9,7 +9,7 @@ var config = {
     outputPath: '/var/web-testsuite-results',
     
     // configure the cron cycle in seconds
-    cronCycle: 30
+    cronCycle: 5
 };
 // config section end
  
@@ -20,7 +20,20 @@ var url = require('url'),
     util = require('util');
 
 // cache for stats
-var cache = '';
+var cache = JSON.stringify({
+    status: 204,
+    error: true,
+    message: 'EMPTY STATS',
+    action: 'GET /simplestats/data',
+    testsetstotal: 0,
+    diffbrowsers: 0,
+    diffdevices: 0,
+    useragentparserfails: 0,
+    faileduas: [],
+    diffbrowserversions: 0,
+    devices: [],
+    browsers: []
+});
 // generate stats every x seconds
 setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
@@ -55,41 +68,58 @@ setInterval(function(){
             
             
             var processFile = function (err, data) {
-                var test = JSON.parse(data);
-                var info = test.info;
-                var uaString = info["window.navigator.userAgent"];
-                
-                testsetsTotal += 1;
-                
-                var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
-                
-                if (typeof ua === 'undefined') {
-                    if(parserFail.indexOf(uaString) === -1){
-                        parserFail.push(uaString);
-                        useragentParserFails += 1;
+            	try{
+                    var test = JSON.parse(data);
+                    var info = test.info;
+                    var uaString = info["window.navigator.userAgent"];
+                    
+                    testsetsTotal += 1;
+                    
+                    var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
+                    
+                    if (typeof ua === 'undefined') {
+                        if(parserFail.indexOf(uaString) === -1){
+                            parserFail.push(uaString);
+                            useragentParserFails += 1;
+                        }
+                    }    
+                    else {
+                        // browser stats
+                        if(typeof browserStats[ua.browser.name] === 'undefined'){
+                            browserStats[ua.browser.name] = [];
+                            browsersTotal += 1;
+                        }
+                        if(browserStats[ua.browser.name].indexOf(ua.browser.version) === -1){
+                            browserStats[ua.browser.name].push(ua.browser.version);
+                            browsersVersionsTotal += 1;
+                        }
+                        browserStats[ua.browser.name][ua.browser.version] += 1;
+                        // device stats
+                        if(typeof ua.hardware.name === 'undefined'){
+                            ua.hardware.name = 'Other'
+                        }
+                        if(deviceStats.indexOf(ua.hardware.name) === -1){
+                            deviceStats.push(ua.hardware.name);
+                            devicesTotal += 1;
+                        }
                     }
-                }    
-                else {
-                    // browser stats
-                    if(typeof browserStats[ua.browser.name] === 'undefined'){
-                        browserStats[ua.browser.name] = [];
-                        browsersTotal += 1;
-                    }
-                    if(browserStats[ua.browser.name].indexOf(ua.browser.version) === -1){
-                        browserStats[ua.browser.name].push(ua.browser.version);
-                        browsersVersionsTotal += 1;
-                    }
-                    browserStats[ua.browser.name][ua.browser.version] += 1;
-                    // device stats
-                    if(typeof ua.hardware.name === 'undefined'){
-                        ua.hardware.name = 'Other'
-                    }
-                    if(deviceStats.indexOf(ua.hardware.name) === -1){
-                        deviceStats.push(ua.hardware.name);
-                        devicesTotal += 1;
-                    }
+                    barrier.commit();
+                }catch(error){
+                	cache = JSON.stringify({
+            		    status: 500,
+            		    error: true,
+            		    message: 'ERROR',
+            		    action: 'GET /simplestats/data',
+            		    testsetstotal: 0,
+            		    diffbrowsers: 0,
+            		    diffdevices: 0,
+            		    useragentparserfails: 0,
+            		    faileduas: [],
+            		    diffbrowserversions: 0,
+            		    devices: [],
+            		    browsers: []
+            		});
                 }
-                barrier.commit();
             };
             
             for(var i = 0; i < files.length; i += 1){
