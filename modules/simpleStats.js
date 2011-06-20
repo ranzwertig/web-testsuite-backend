@@ -119,7 +119,7 @@ setInterval(function(){
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
-    	res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
+    	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     	res.write(cache);
     	res.end();
     }
