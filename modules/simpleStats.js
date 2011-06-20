@@ -20,7 +20,7 @@ var url = require('url'),
     util = require('util');
 
 // generate stats every x seconds
-var cache = {};
+var cache = '';
 
 setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
