@@ -122,6 +122,7 @@ setInterval(function(){
 							failedTests += 1;
 						}
                     	else{
+                    		console.log(singleTest.result);
                     		noResult += 1;
                     	}
                     }
