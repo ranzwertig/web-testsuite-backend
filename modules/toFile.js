@@ -9,8 +9,8 @@
  * 
  *  To configure this module please change the config section below.
  * 
- *  @version 0.3.2
- *  @author Christian Ranz
+ *  @version 0.9.3
+ *  @author Christian Ranz <info@christianranz.com>
  *  @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
  *  @license MIT
  */
@@ -46,7 +46,7 @@ exports.init = function(settings){
 	if(typeof settings.messenger !== 'undefined'){
 		modulMessenger = settings.messenger;
 	}
-}
+};
 
 // the post request handler
 exports.onpost = function(req, res){

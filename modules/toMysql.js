@@ -15,7 +15,7 @@
  * 
  *  @dependencie https://github.com/felixge/node-mysql
  * 
- *  @version 0.0.4
+ *  @version 0.0.5
  *  @author Christian Ranz
  *  @licence MIT
  * 
@@ -51,6 +51,14 @@ var url = require('url'),
     qs = require('querystring'),
     Client = require("mysql").Client,
     db = new Client(config);
+    
+// init function called by the loader
+var modulMessenger = {};
+exports.init = function(settings){
+    if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+	}
+};
 
 db.connect();
 

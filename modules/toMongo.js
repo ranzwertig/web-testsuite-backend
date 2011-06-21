@@ -20,7 +20,7 @@
  * 
  *  @dependency https://github.com/christkv/node-mongodb-native
  * 
- *  @version 0.0.2
+ *  @version 0.0.3
  *  @author Christian Ranz
  *  @licence MIT
  */
@@ -39,6 +39,14 @@ var url = require('url'),
     qs = require('querystring'),
     Db = require('mongodb').Db,
     Server = require('mongodb').Server;
+    
+// init function called by the loader
+var modulMessenger = {};
+exports.init = function(settings){
+    if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+	}
+};
 
 var db = new Db(config.db, new Server(config.host, config.port, {}), {native_parser:config.native_parser});
  

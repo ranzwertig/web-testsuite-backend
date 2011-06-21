@@ -1,5 +1,10 @@
 /**
  *  The Module SimpleStats provides some very simple statistics about the submitted tests
+ * 
+ *  @version 0.9.1
+ *  @author Christian Ranz <info@christianranz.com>
+ *  @see https://github.com/ranzwertig/web-testsuite-backend/wiki/Tofile
+ *  @license MIT
  */
  
 // config section
@@ -164,7 +169,7 @@ exports.init = function(settings){
 			}
 		});
 	}
-}
+};
 
 // generate stats every x seconds
 var processFileResults = function(){
