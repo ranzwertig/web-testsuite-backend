@@ -56,6 +56,7 @@ exports.init = function(settings){
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			// if realtime is enabled broadcast cache
+			console.log('asd');
 			if(typeof socket !== 'undefined' && config.realtime === true){
 				socket.broadcast(cache);
 			}
