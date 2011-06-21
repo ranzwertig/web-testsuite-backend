@@ -54,8 +54,82 @@ var processRealtimeResult = function(test){
         var uaString = info["window.navigator.userAgent"];
         
         cache.testsetstotal += 1;
+        var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
+        
+        if (typeof ua === 'undefined') {
+            if(cache.faileduas.indexOf(uaString) === -1){
+                cache.faileduas.push(uaString);
+                cache.useragentparserfails += 1;
+            }
+        }    
+        else {
+        	// useragent list
+            if(typeof cache.useragents[uaString] === 'undefined'){
+                cache.useragents[uaString] = {
+                	'browser.name': ua.browser.name,
+                	'browser.version': ua.browser.version,
+                	'hardware.name': ua.hardware.name,
+                	'os.name': ua.os.name,
+                	'security': ua.security,
+                	'locale': ua.locale,
+                	'engine.name': ua.engine.name,
+                	'engine.version': ua.engine.version
+                };    
+            }
+            // browser stats
+            if(typeof cache.browsers[ua.browser.name] === 'undefined'){
+                cache.browsers[ua.browser.name] = [];
+                cache.diffbrowsers += 1;
+            }
+            if(cache.browsers[ua.browser.name].indexOf(ua.browser.version) === -1){
+                cache.browsers[ua.browser.name].push(ua.browser.version);
+                cache.diffbrowserversions += 1;
+            }
+            cache.browsers[ua.browser.name][ua.browser.version] += 1;
+            // device stats
+            if(typeof ua.hardware.name === 'undefined'){
+                ua.hardware.name = 'Other'
+            }
+            if(cache.devices.indexOf(ua.hardware.name) === -1){
+                cache.devices.push(ua.hardware.name);
+                cache.diffdevices += 1;
+            }
+            
+            // process tests
+            if(typeof cache.browserranking[ua.browser.name] === 'undefined'){
+                cache.browserranking[ua.browser.name] = {
+                	failed: 0,
+                	success: 0,
+                	error: 0,
+                	notapp: 0,
+                	total: 0
+                };
+            }
+            
+            for(var index = 0; index < tests.length; index += 1){
+                var singleTest = tests[index];
+                cache.browserranking[ua.browser.name].total += 1;
+                if(singleTest.result === 'success'){
+			    	cache.succeededtests += 1;
+			    	cache.browserranking[ua.browser.name].success += 1;
+			    }
+			    else if(singleTest.result === 'failure'){
+			    	cache.failedtests += 1;
+			    	cache.browserranking[ua.browser.name].failed += 1;
+			    }
+			    else if(singleTest.result === 'not applicable'){
+			    	cache.notapptests += 1;
+			    	cache.browserranking[ua.browser.name].notapp += 1;
+			    }
+                else{
+                	cache.errortests += 1;
+                	cache.browserranking[ua.browser.name].error += 1;
+                }
+            }
+            cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
+        }
 	}catch(error){
-		console.log(error);
+		// do sth on error
 	}
 };
     
