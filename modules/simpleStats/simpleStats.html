@@ -214,6 +214,22 @@
     </style>
     <script>
         $(document).ready(function(){
+            // do realtime stuff
+            var socket = new io.Socket('web-testsuite-backend.browserlove.org'); 
+         	socket.connect();
+         	
+         	socket.on('connect', function(){
+         	   alert('connected');
+         	});
+         	
+         	socket.on('message', function(data){
+         	   alert(data);
+         	});
+         	
+         	socket.on('disconnect', function(){
+         	   alert('disconnect');
+         	});
+            
             
             var getStats = function(){
                 // get the data from the backend
