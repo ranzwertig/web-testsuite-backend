@@ -30,6 +30,11 @@ exports.init = function(settings){
 	if(typeof settings.messenger !== 'undefined'){
 		console.log(settings.messenger);
 		modulMessenger = settings.messenger;
+		
+		// listen for jsonresult event and add stats
+		modulMessenger.on('jsonresult',function(result){
+			console.log('got a realtimeresult');
+		});
 	}
 }
 
@@ -54,11 +59,6 @@ var cache = JSON.stringify({
     totaltests: 0,
     browserranking: {},
     useragents: {}
-});
-
-// listen for jsonresult event and add stats
-modulMessenger.on('jsonresult',function(result){
-	console.log('got a realtimeresult');
 });
 
 // generate stats every x seconds
