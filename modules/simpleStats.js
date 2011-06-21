@@ -53,7 +53,7 @@ var processRealtimeResult = function(test){
         var tests = test.tests;
         var uaString = info["window.navigator.userAgent"];
         
-        cache.testsetsTotal += 1;
+        cache.testsetstotal += 1;
 	}catch(error){
 		console.log(error);
 	}
