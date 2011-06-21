@@ -45,6 +45,28 @@ var cache = {
     browserranking: {},
     useragents: {}
 };
+  
+// process realtime results to stats
+var processRealtimeResult = function(test){
+	try{
+        var info = test.info;
+        var tests = test.tests;
+        var uaString = info["window.navigator.userAgent"];
+        
+        cache.testsetsTotal += 1;
+        
+        var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
+        
+        if (typeof ua === 'undefined') {
+            if(cache.parserFail.indexOf(uaString) === -1){
+                cache.parserFail.push(uaString);
+                cache.useragentParserFails += 1;
+            }
+        } 
+	}catch(error)
+		// do sth on error
+	}
+};
     
 // init function called by the loader
 var modulMessenger = {};
@@ -55,6 +77,8 @@ exports.init = function(settings){
 		modulMessenger = settings.messenger;
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
+			// process the realtime result
+			processRealtimeResult();
 			// if realtime is enabled broadcast cache
 			if(typeof socket !== 'undefined' && config.realtime === true){
 				socket.broadcast(cache);
