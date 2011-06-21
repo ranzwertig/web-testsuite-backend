@@ -34,15 +34,13 @@ exports.init = function(settings){
 		modulMessenger.on('jsonresult',function(result){
 			console.log('got a realtimeresult');
 			if(typeof socket !== 'undefined'){
-				console.log('broadcast');
 				socket.broadcast(result);
 			}
 		});
 		
 		modulMessenger.on('serverstarted',function(backend){
-			var socket = sio.listen(backend.server);
+			socket = sio.listen(backend.server);
 			socket.on('connection', function(client){
-				console.log('new connection');
 				client.on('message', function(data){
  			 	});
  			 	client.on('disconnect', function(data){
