@@ -167,6 +167,7 @@
         .fr {float:right;}
         .fl {float:left;}
         .hd {display:none !important;}
+        .nb {font-weight:normal !important;}
         
         body {font-family:'Helvetica', 'Arial', sans-serif;font-size: 16px;text-shadow: 0px 1px 1px #221E1C;color:#405926;background-color:#302D2C;}
         h1, h2, h3, h4 {font-family:'Anton',arial,serif;}
@@ -199,7 +200,7 @@
         ul.list {list-style-type:none;}
         ul.list li {line-height: 15px;margin:0;background-color:#5c5c5c;color:#EAF2D9;padding:5px;margin:2px 0 2px 0;font-size:12px;}
         
-        .item {list-style-type:none;background-color:#444;padding:3px;margin:2px;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5);font-weight:bold;}
+        .item {list-style-type:none !important;background-color:#444 !important;padding:3px !important;margin:2px !important;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5) !important;font-weight:bold;}
         
         /*common box styles*/
         p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
@@ -241,13 +242,16 @@
                         var useragents = data.useragents; 
                         for(var ua in useragents){
                         	var uaAttArr = useragents[ua];
-                        	var innerUaList = '<ul>';
+                        	var innerUaList = '<ul class="hd uadetails">';
                         	for(var attr in uaAttArr){
-                        		innerUaList += '<li class="item">'+attr+': '+uaAttArr[attr]+'</li>\n';
+                        		innerUaList += '<li class="item nb">'+attr+': '+uaAttArr[attr]+'</li>\n';
                         	}
                         	innerUaList += '</ul>';
-                            $('#useragentlist').append('<li>'+ua+'<br>'+innerUaList+'</li>\n')
+                            $('#useragentlist').append('<li class="uaitem">'+ua+'<br>'+innerUaList+'</li>\n')
                         }
+                        $('.uaitem').click(function(){
+                        	$(this).children('.uadetails').toggleClass('hd');
+                        });
                         // browsers
                         var brlist = data.browsers; 
                         for(var br in brlist){
