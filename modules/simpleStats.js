@@ -63,7 +63,7 @@ var processRealtimeResult = function(test){
                 cache.useragentParserFails += 1;
             }
         } 
-	}catch(error)
+	}catch(error){
 		// do sth on error
 	}
 };
