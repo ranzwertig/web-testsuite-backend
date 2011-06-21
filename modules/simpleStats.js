@@ -25,9 +25,7 @@ var url = require('url'),
 // init function called by the loader
 var modulMessenger = {};
 exports.init = function(settings){
-	if(typeof settings.messenger !== 'undefined'){
-		modulMessenger = settings.messenger;
-	}
+	modulMessenger = settings.messenger;
 }
 
 // cache for stats
