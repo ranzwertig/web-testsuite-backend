@@ -76,7 +76,7 @@ exports.onpost = function(req, res){
                             throw error;
                         }
                         else{
-                            res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                            res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
                             // build response object
                             var responseJson = {
                                 status: 200,
@@ -125,7 +125,7 @@ exports.onpost = function(req, res){
             // no more data
             req.on('end', function(){
                 outputStream.end();
-                res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+                res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
                 // build response object
                 var responseJson = {
                     status: 200,
