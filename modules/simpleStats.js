@@ -134,7 +134,7 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		console.log('error processing realtime result');
+		console.log('simplestats: error processing realtime result');
 	}
 };
     
@@ -218,7 +218,12 @@ var processFileResults = function(){
             
             
             var processFile = function (err, data) {
-            	try{
+                if(err){
+                    barrier.commit();
+                    console.log('simplestats: error reading file');
+                }
+            	
+                try{
                     var test = JSON.parse(data);
                     var info = test.info;
                     var tests = test.tests;
@@ -303,7 +308,7 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
-                    console.log('error processing result of file');
+                    console.log('simplestats: error reading file');
                     barrier.commit();
                 }
             };
