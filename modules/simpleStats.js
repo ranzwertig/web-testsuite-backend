@@ -134,7 +134,7 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		console.log(error);
+		console.log('error processing realtime result');
 	}
 };
     
@@ -303,7 +303,8 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
-                    console.log(error);
+                    console.log('error processing result of file');
+                    barrier.commit();
                 }
             };
             
