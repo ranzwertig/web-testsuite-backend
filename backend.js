@@ -11,8 +11,7 @@ var http = require('http'),
     server = require('./lib/httpserver'),
     config = require('./config'),
     Barrier = require('./lib/barrier').Barrier,
-    util = require('util'),
-    events = require('events');;
+    Messenger = require('.lib/messenger').Messenger;
     
 //  get arguments from comman line
 process.argv.forEach(function (val, index, array) {
@@ -34,8 +33,6 @@ var backend = new server.HttpServer(config.httpSettings);
  * using events. A module can listen on the Messenger to
  * recieve messages and events.
  */
-var Messenger = function(){ this.type = 'messenger'; };
-util.inherits(Messenger, events.EventEmitter);
 var moduleMessenger = new Messenger();
 
 //  load all enabled modules
@@ -45,7 +42,6 @@ for(var i = 0; i < config.modulesEnabled.length; i +=1){
     var mod = require('./modules/'+config.modulesEnabled[i]);
     // pass the moduleMessenger to the module if it supports it
     if(typeof mod.init === 'function'){
-    	console.debug(moduleMessenger);
     	mod.init({
     		messenger: moduleMessenger
     	});
