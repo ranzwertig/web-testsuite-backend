@@ -39,6 +39,7 @@ setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
+            var userAgents = [];
             var useragentParserFails = 0;
             
             var browserStats = {};
@@ -73,7 +74,8 @@ setInterval(function(){
                     errortests: errorTests,
                     notapptests: notAppTests,
                     totaltests: succeededTests + failedTests + errorTests + notAppTests,
-                    browserranking: browserRanking
+                    browserranking: browserRanking,
+                    useragents: userAgents
                 });
             });
             
@@ -88,6 +90,10 @@ setInterval(function(){
                     testsetsTotal += 1;
                     
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
+                    
+                    if(userAgents.indexOf(uaString) === -1){
+                        userAgents.push(uaString);    
+                    }
                     
                     if (typeof ua === 'undefined') {
                         if(parserFail.indexOf(uaString) === -1){
@@ -149,20 +155,7 @@ setInterval(function(){
                     }
                     barrier.commit();
                 }catch(error){
-                	cache = JSON.stringify({
-            		    status: 500,
-            		    error: true,
-            		    message: 'ERROR',
-            		    action: 'GET /simplestats/data',
-            		    testsetstotal: 0,
-            		    diffbrowsers: 0,
-            		    diffdevices: 0,
-            		    useragentparserfails: 0,
-            		    faileduas: [],
-            		    diffbrowserversions: 0,
-            		    devices: [],
-            		    browsers: []
-            		});
+                	// error processing file
                 }
             };
             
@@ -200,6 +193,7 @@ exports.onget = function(req, res){
     }
     // output the simpleStats html
     else if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
         var readStream = fs.createReadStream('./modules/simpleStats/simpleStats.html');
         util.pump(readStream, res, function(){
             res.writeHead(500);    
@@ -207,7 +201,6 @@ exports.onget = function(req, res){
             return;
         });
         readStream.on('end', function(){
-            res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
             res.end();
         });
     }
