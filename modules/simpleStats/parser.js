@@ -347,6 +347,33 @@ var UserAgentParser = {
                 }
             };
         }
+        // Camino
+        //      Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en; rv:1.9.0.19) Gecko/2011032020 Camino/2.0.7 (like Firefox/3.0.19)
+        else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/.test(ua)){
+            var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/);
+            console.log(match);
+            var hardware = {},
+                os = {},
+                locale = ""
+                security = "";
+
+            var ret = {
+                    hardware: hardware,
+                os: os,
+                engine:{
+                    name: match[4].trim(), //     Presto,     Webkit,
+                    version: [match[5].trim()], //  2.4.15,     534.3, 533.19.4
+                    locale: locale, // de-DE, en-GB, en-de, en, de
+                    security: security, // N, U, I
+                    raw: {} // {Presto:"2.4.15", Version:"10.00"}
+                    },
+                browser:{
+                    name: match[6].trim(), //    Safari        Opera
+                    version: match[7].trim(), // 5.0.3       11.0
+                    raw: {}
+                }
+            };
+        }
         return ret;
 	},
 	
