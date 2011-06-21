@@ -11,7 +11,8 @@ var http = require('http'),
     server = require('./lib/httpserver'),
     config = require('./config'),
     Barrier = require('./lib/barrier').Barrier,
-    Messenger = require('./lib/messenger').Messenger;
+    Messenger = require('./lib/messenger').Messenger,
+    Logger = require('./lib/logger').Logger;
     
 //  get arguments from comman line
 process.argv.forEach(function (val, index, array) {
@@ -35,6 +36,11 @@ var backend = new server.HttpServer(config.httpSettings);
  */
 var moduleMessenger = new Messenger();
 
+// init logger
+var moduleLogger = new Logger({
+    level: 0    
+});
+
 //  load all enabled modules
 var mods = [];
 for(var i = 0; i < config.modulesEnabled.length; i +=1){
@@ -43,7 +49,8 @@ for(var i = 0; i < config.modulesEnabled.length; i +=1){
     // pass the moduleMessenger to the module if it supports it
     if(typeof mod.init === 'function'){
     	mod.init({
-    		messenger: moduleMessenger
+    		messenger: moduleMessenger,
+            logger: moduleLogger
     	});
     }
     mods.push(mod);

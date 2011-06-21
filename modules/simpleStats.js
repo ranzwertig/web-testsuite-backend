@@ -28,6 +28,9 @@ var url = require('url'),
     util = require('util'),
     sio = require('socket.io');
     
+var modulMessenger = {};
+var logger = {};
+    
 // cache for stats
 var cache = {
     status: 204,
@@ -134,15 +137,25 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		console.log('simplestats: error processing realtime result');
+		logger.error('simplestats: error processing realtime result');
 	}
 };
     
 // init function called by the loader
-var modulMessenger = {};
 var socket;
 exports.init = function(settings){
-	console.log('init simpleSatts');
+    // get the logger from the server
+    if(typeof settings.logger !== 'undefined'){
+        logger = settings.logger;
+    }
+    else{
+        // else init own logger
+        var Logger = require('../lib/logger').Logger;
+        logger = new Logger({
+            level: 0    
+        });
+    }
+    
 	if(typeof settings.messenger !== 'undefined'){
 		modulMessenger = settings.messenger;
 		// listen for jsonresult event and add stats
@@ -220,7 +233,7 @@ var processFileResults = function(){
             var processFile = function (err, data) {
                 if(err){
                     barrier.commit();
-                    console.log('simplestats: error reading file');
+                    logger.error('simplestats: error reading file');
                 }
             	
                 try{
@@ -308,7 +321,7 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
-                    console.log('simplestats: error reading file');
+                    logger.error('simplestats: error reading file');
                     barrier.commit();
                 }
             };
