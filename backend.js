@@ -45,7 +45,7 @@ for(var i = 0; i < config.modulesEnabled.length; i +=1){
     var mod = require('./modules/'+config.modulesEnabled[i]);
     // pass the moduleMessenger to the module if it supports it
     if(typeof mod.init === 'function'){
-    	console.log('mod init');
+    	console.log(moduleMessenger);
     	mod.init({
     		messenger: moduleMessenger
     	});
