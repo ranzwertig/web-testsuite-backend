@@ -24,7 +24,9 @@ var url = require('url'),
     
 // init function called by the loader
 var modulMessenger = {};
+
 exports.init = function(settings){
+	console.log('init simpleSatts');
 	if(typeof settings.messenger !== 'undefined'){
 		console.log(settings.messenger);
 		modulMessenger = settings.messenger;
