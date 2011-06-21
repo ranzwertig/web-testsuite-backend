@@ -91,10 +91,6 @@ setInterval(function(){
                     
                     var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
                     
-                    if(userAgents.indexOf(uaString) === -1){
-                        userAgents.push(uaString);    
-                    }
-                    
                     if (typeof ua === 'undefined') {
                         if(parserFail.indexOf(uaString) === -1){
                             parserFail.push(uaString);
@@ -102,6 +98,21 @@ setInterval(function(){
                         }
                     }    
                     else {
+                    	// useragent list
+                    	if(typeof userAgents[uaString] === 'undefined'){
+                    	    userAgents[uaString] = {
+                    	    	'useragent': uaString,
+                    	    	'browser.name': ua.browser.name,
+                    	    	'browser.version': ua.browser.version,
+                    	    	'hardware.name': ua.hardware.name,
+                    	    	'os.name': ua.os.name,
+                    	    	'security': ua.security,
+                    	    	'locale': ua.locale,
+                    	    	'engine.name': ua.engine.name,
+                    	    	'engine.version': ua.engine.version
+                    	    };    
+                    	}
+                    
                         // browser stats
                         if(typeof browserStats[ua.browser.name] === 'undefined'){
                             browserStats[ua.browser.name] = [];
