@@ -25,7 +25,7 @@ var url = require('url'),
     
 // init function called by the loader
 var modulMessenger = {};
-var socket = NULL;
+var socket;
 exports.init = function(settings){
 	console.log('init simpleSatts');
 	if(typeof settings.messenger !== 'undefined'){
@@ -33,7 +33,7 @@ exports.init = function(settings){
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			console.log('got a realtimeresult');
-			if(socket !== NULL){
+			if(typeof socket !== 'undefined'){
 				console.log('broadcast');
 				socket.broadcast(result);
 			}
