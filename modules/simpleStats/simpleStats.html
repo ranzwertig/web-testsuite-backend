@@ -199,7 +199,7 @@
         ul.list {list-style-type:none;}
         ul.list li {line-height: 15px;margin:0;background-color:#5c5c5c;color:#EAF2D9;padding:5px;margin:2px 0 2px 0;font-size:12px;}
         
-        .item {background-color:#444;padding:3px;margin:2px;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5);font-weight:bold;}
+        .item {list-style-type:none;background-color:#444;padding:3px;margin:2px;border:1px solid #277185;box-shadow:0 0px 3px rgba(0, 0, 0, 0.5);font-weight:bold;}
         
         /*common box styles*/
         p.teaser {font-family:'Georgia';font-size: 28px;line-height: 1.3em;margin:5px 0 10px 0;}
@@ -243,7 +243,7 @@
                         	var uaAttArr = useragents[ua];
                         	var innerUaList = '<ul>';
                         	for(var attr in uaAttArr){
-                        		innerUaList += '<li>'+attr+': '+uaAttArr[attr]+'</li>\n';
+                        		innerUaList += '<li class="item">'+attr+': '+uaAttArr[attr]+'</li>\n';
                         	}
                         	innerUaList += '</ul>';
                             $('#useragentlist').append('<li>'+ua+'<br>'+innerUaList+'</li>\n')

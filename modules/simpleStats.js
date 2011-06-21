@@ -101,7 +101,6 @@ setInterval(function(){
                     	// useragent list
                     	if(typeof userAgents[uaString] === 'undefined'){
                     	    userAgents[uaString] = {
-                    	    	'useragent': uaString,
                     	    	'browser.name': ua.browser.name,
                     	    	'browser.version': ua.browser.version,
                     	    	'hardware.name': ua.hardware.name,
