@@ -27,6 +27,7 @@ process.argv.forEach(function (val, index, array) {
 
 //  start the http server
 var backend = new server.HttpServer(config.httpSettings);
+console.log(backend.server);
 
 /**
  * the Messenger allows a communication between the modules 
