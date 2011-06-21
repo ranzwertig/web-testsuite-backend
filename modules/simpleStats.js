@@ -46,7 +46,7 @@ exports.init = function(settings){
  			 	});
  			 	client.on('disconnect', function(data){
  			 	});
-			};
+			});
 		});
 	}
 }
