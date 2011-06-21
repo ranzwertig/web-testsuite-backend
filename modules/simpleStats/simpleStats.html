@@ -235,16 +235,19 @@
                     $('#errortests').html(data.errortests);
                     
                     var faileduas = data.faileduas; 
+                    $('#faileduas').html('');
                     for(var fua in faileduas){
                         $('#faileduas').append('<li>'+faileduas[fua]+'</li>\n')
                     }
                     // devices
                     var devlist = data.devices; 
+                    $('#devicelist').html('');
                     for(var dev in devlist){
                         $('#devicelist').append('<li>'+devlist[dev]+'</li>\n')
                     }
                     // useragents
                     var useragents = data.useragents; 
+                    $('#useragentlist').html('');
                     for(var ua in useragents){
                     	var uaAttArr = useragents[ua];
                     	var innerUaList = '<ul class="hd uadetails">';
@@ -259,6 +262,7 @@
                     });
                     // browsers
                     var brlist = data.browsers; 
+                    $('#browserlist').html('');
                     for(var br in brlist){
                         var innerList = '';
                     	var brows = brlist[br];
@@ -281,6 +285,7 @@
                     	});
                     }
                     rankedBrowsers.sort(function(a,b){return b.score - a.score});
+                    $('#browserranking').html('');
                     for(var i = 0; i < rankedBrowsers.length; i += 1){
                     	$('#browserranking').append('<li><h3>'+(i+1)+': '+rankedBrowsers[i].name+'</h3><div class="fl item">Total: '+rankedBrowsers[i].stats.total+'</div><div class="fl item success">Success: '+rankedBrowsers[i].stats.success+'</div><div class="fl item error">failed: '+rankedBrowsers[i].stats.failed+'</div><div class="fl item">error: '+rankedBrowsers[i].stats.error+'</div><div class="cl"></div></li>\n');
                     }
