@@ -28,9 +28,7 @@ var modulMessenger = {};
 exports.init = function(settings){
 	console.log('init simpleSatts');
 	if(typeof settings.messenger !== 'undefined'){
-		console.log(settings.messenger);
 		modulMessenger = settings.messenger;
-		
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			console.log('got a realtimeresult');

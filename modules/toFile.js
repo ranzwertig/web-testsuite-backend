@@ -79,7 +79,7 @@ exports.onpost = function(req, res){
                             tests: tests
                         };
                         
-                        messenger.emit('jsonresult', result);
+                        modulMessenger.emit('jsonresult', result);
                                  
                     fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
                         if(error){
