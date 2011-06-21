@@ -39,7 +39,7 @@ setInterval(function(){
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
-            var userAgents = [];
+            var userAgents = {};
             var useragentParserFails = 0;
             
             var browserStats = {};
