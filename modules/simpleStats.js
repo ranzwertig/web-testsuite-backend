@@ -134,7 +134,7 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		// do sth on error
+		console.log(error);
 	}
 };
     
@@ -303,6 +303,7 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
+                    console.log(error);
                 }
             };
             

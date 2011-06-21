@@ -351,7 +351,6 @@ var UserAgentParser = {
         //      Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en; rv:1.9.0.19) Gecko/2011032020 Camino/2.0.7 (like Firefox/3.0.19)
         else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/);
-            console.log(match);
             var hardware = {},
                 os = {},
                 locale = ""
