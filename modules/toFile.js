@@ -39,6 +39,14 @@ var fs = require('fs'),
     util = require('util'),
     qs = require('querystring'),
     url = require('url');
+    
+// init function called by the loader
+var modulMessenger = {};
+exports.init = function(settings){
+	if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+	}
+}
 
 // the post request handler
 exports.onpost = function(req, res){
@@ -70,6 +78,8 @@ exports.onpost = function(req, res){
                             info: info,
                             tests: tests
                         };
+                        
+                        messenger.emit('jsonresult', result);
                                  
                     fs.writeFile(config.outputPath+'/'+fileName, JSON.stringify(result), function (error) {
                         if(error){

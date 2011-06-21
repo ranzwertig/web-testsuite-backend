@@ -9,7 +9,10 @@ var config = {
     outputPath: '/var/web-testsuite-results',
     
     // configure the cron cycle in seconds
-    cronCycle: 10
+    cronCycle: 10,
+    
+    // realtime updates using socket.io
+    realtime: false
 };
 // config section end
  
@@ -18,6 +21,14 @@ var url = require('url'),
     Barrier = require('../lib/barrier').Barrier,
     fs = require('fs'),
     util = require('util');
+    
+// init function called by the loader
+var modulMessenger = {};
+exports.init = function(settings){
+	if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+	}
+}
 
 // cache for stats
 var cache = JSON.stringify({
@@ -31,11 +42,24 @@ var cache = JSON.stringify({
     useragentparserfails: 0,
     faileduas: [],
     diffbrowserversions: 0,
-    devices: [],
-    browsers: []
+    devices: {},
+    browsers: {},
+    succeededtests: 0,
+    failedtests: 0,
+    errortests: 0,
+    notapptests: 0,
+    totaltests: 0,
+    browserranking: {},
+    useragents: {}
 });
+
+// listen for jsonresult event and add stats
+modulMessenger.on('jsonresult',function(result){
+	console.log('got a realtimeresult');
+});
+
 // generate stats every x seconds
-setInterval(function(){
+var processFileResults = function(){
 	fs.readdir(config.outputPath, function(err, files){
         if(!err){    
             var parserFail = [];
@@ -181,17 +205,28 @@ setInterval(function(){
                 message: 'ERROR',
                 action: 'GET /simplestats/data',
                 testsetstotal: 0,
-                diffbrowsers: 0,
-                diffdevices: 0,
-                useragentparserfails: 0,
-                faileduas: [],
-                diffbrowserversions: 0,
-                devices: [],
-                browsers: []
+    			diffbrowsers: 0,
+    			diffdevices: 0,
+    			useragentparserfails: 0,
+    			faileduas: [],
+    			diffbrowserversions: 0,
+    			devices: {},
+    			browsers: {},
+    			succeededtests: 0,
+    			failedtests: 0,
+    			errortests: 0,
+    			notapptests: 0,
+    			totaltests: 0,
+    			browserranking: {},
+    			useragents: {}
             });
         }  
     });   
-},config.cronCycle * 1000);
+};
+// set cron to update the files when realtime feature is disabled
+if(config.cronCycle > 0 && config.realtime == false){
+	setInterval(processFileResults, config.cronCycle * 1000);
+}
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
