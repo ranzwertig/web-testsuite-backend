@@ -54,17 +54,8 @@ var processRealtimeResult = function(test){
         var uaString = info["window.navigator.userAgent"];
         
         cache.testsetsTotal += 1;
-        
-        var ua = UserAgentParser.parse(info["window.navigator.userAgent"]);
-        
-        if (typeof ua === 'undefined') {
-            if(cache.parserFail.indexOf(uaString) === -1){
-                cache.parserFail.push(uaString);
-                cache.useragentParserFails += 1;
-            }
-        } 
 	}catch(error){
-		// do sth on error
+		console.log(error);
 	}
 };
     
