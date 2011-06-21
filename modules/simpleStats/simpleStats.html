@@ -230,17 +230,23 @@
                         
                         var faileduas = data.faileduas; 
                         for(var fua in faileduas){
-                            $('#faileduas').append('<li>'+faileduas[fua]+'</li>')
+                            $('#faileduas').append('<li>'+faileduas[fua]+'</li>\n')
                         }
                         // devices
                         var devlist = data.devices; 
                         for(var dev in devlist){
-                            $('#devicelist').append('<li>'+devlist[dev]+'</li>')
+                            $('#devicelist').append('<li>'+devlist[dev]+'</li>\n')
                         }
                         // useragents
                         var useragents = data.useragents; 
                         for(var ua in useragents){
-                            $('#useragentlist').append('<li>'+ua+'</li>')
+                        	var uaAttArr = useragents[ua];
+                        	var innerUaList = '<ul>';
+                        	for(var attr in uaAttArr){
+                        		innerUaList += '<li>'+attr+': '+uaAttArr[attr]+'</li>\n';
+                        	}
+                        	innerUaList += '</ul>';
+                            $('#useragentlist').append('<li>'+ua+'<br>'+innerUaList+'</li>\n')
                         }
                         // browsers
                         var brlist = data.browsers; 
@@ -251,7 +257,7 @@
                         		innerList += '<div class="fl item">'+brows[version]+'</div>\n'
                         	}
                         	innerList += '<div class="cl"></div>\n';
-                            $('#browserlist').append('<li><h3>'+br+'</h3>'+innerList+'</li>');
+                            $('#browserlist').append('<li><h3>'+br+'</h3>'+innerList+'</li>\n');
                         }
                         // browserranking
                         var rankedBrowsers = [];
