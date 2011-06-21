@@ -301,10 +301,8 @@
          	   $('#socketstate').removeClass('on');
          	   $('#socketstate').html('offline');
          	});
-            
-            $.get('/simplestats/data/', {}, processStats, 'json');
             // fetch stats after page loaded
-            getStats();
+            $.get('/simplestats/data/', {}, processStats, 'json');
         });
     </script>
 </head>
