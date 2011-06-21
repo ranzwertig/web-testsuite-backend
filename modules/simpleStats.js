@@ -20,11 +20,12 @@ var url = require('url'),
     UserAgentParser = require('./simpleStats/parser').UserAgentParser,
     Barrier = require('../lib/barrier').Barrier,
     fs = require('fs'),
-    util = require('util');
+    util = require('util'),
+    sio = require('socket.io');
     
 // init function called by the loader
 var modulMessenger = {};
-
+var socket = NULL;
 exports.init = function(settings){
 	console.log('init simpleSatts');
 	if(typeof settings.messenger !== 'undefined'){
@@ -32,6 +33,20 @@ exports.init = function(settings){
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			console.log('got a realtimeresult');
+			if(socket !== NULL){
+				console.log('broadcast');
+				socket.broadcast(result);
+			}
+		});
+		
+		modulMessenger.on('serverstarted',function(backend){
+			var socket = sio.listen(backend.server);
+			socket.on('connection', function(client){
+				client.on('message', function(data){
+ 			 	});
+ 			 	client.on('disconnect', function(data){
+ 			 	});
+			};
 		});
 	}
 }

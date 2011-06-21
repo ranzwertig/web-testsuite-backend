@@ -133,4 +133,5 @@ backend.on('delete',function(req, res){
 });
 
 backend.start();
-console.log(backend.server);
+// give the server to all modules which needs it
+moduleMessenger.emit('serverstarted', backend);
