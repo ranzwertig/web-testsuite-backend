@@ -233,7 +233,7 @@ var processFileResults = function(){
             var processFile = function (err, data) {
                 if(err){
                     barrier.commit();
-                    logger.error('simplestats: error reading file');
+                    logger.error('simplestats: error reading file '+err.description);
                 }
             	
                 try{
