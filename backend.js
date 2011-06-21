@@ -11,7 +11,7 @@ var http = require('http'),
     server = require('./lib/httpserver'),
     config = require('./config'),
     Barrier = require('./lib/barrier').Barrier,
-    Messenger = require('.lib/messenger').Messenger;
+    Messenger = require('./lib/messenger').Messenger;
     
 //  get arguments from comman line
 process.argv.forEach(function (val, index, array) {
