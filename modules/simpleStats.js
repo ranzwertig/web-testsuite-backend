@@ -24,7 +24,7 @@ var url = require('url'),
     sio = require('socket.io');
     
 // cache for stats
-var cache = JSON.stringify({
+var cache = {
     status: 204,
     error: true,
     message: 'EMPTY STATS',
@@ -44,7 +44,7 @@ var cache = JSON.stringify({
     totaltests: 0,
     browserranking: {},
     useragents: {}
-});
+};
     
 // init function called by the loader
 var modulMessenger = {};
@@ -56,7 +56,6 @@ exports.init = function(settings){
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			// if realtime is enabled broadcast cache
-			console.log('asd');
 			if(typeof socket !== 'undefined' && config.realtime === true){
 				socket.broadcast(cache);
 			}
@@ -100,7 +99,7 @@ var processFileResults = function(){
             
             var barrier = new Barrier(files.length, function() {
                 // cache the stats
-                cache = JSON.stringify({
+                cache = {
                     status: 200,
                     error: false,
                     message: 'OK',
@@ -120,7 +119,7 @@ var processFileResults = function(){
                     totaltests: succeededTests + failedTests + errorTests + notAppTests,
                     browserranking: browserRanking,
                     useragents: userAgents
-                });
+                };
             });
             
             
@@ -219,7 +218,7 @@ var processFileResults = function(){
             }
         }
         else{
-            cache = JSON.stringify({
+            cache = {
                 status: 500,
                 error: true,
                 message: 'ERROR',
@@ -239,7 +238,7 @@ var processFileResults = function(){
     			totaltests: 0,
     			browserranking: {},
     			useragents: {}
-            });
+            };
         }  
     });   
 };
@@ -253,7 +252,7 @@ exports.onget = function(req, res){
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
     	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     	// send stats from cache to client
-    	res.write(cache);
+    	res.write(JSON.stringify(cache));
     	res.end();
     }
     // output the simpleStats html
