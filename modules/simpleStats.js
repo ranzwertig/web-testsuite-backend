@@ -246,6 +246,9 @@ var processFileResults = function(){
 if(config.cronCycle > 0 && config.realtime == false){
 	setInterval(processFileResults, config.cronCycle * 1000);
 }
+else{
+	processFileResults();
+}
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
