@@ -113,36 +113,6 @@
             vertical-align:middle;
         }
         
-        /*Ribbon css thanks to http://unindented.org/articles/2009/10/github-ribbon-using-css-transforms/ */
-        .ribbon {
-          background-color: #354C29;
-          overflow: hidden;
-          /* top left corner */
-          position: absolute;
-          left: -3em;
-          top: 2.5em;
-          /* 45 deg ccw rotation */
-          -moz-transform: rotate(-45deg);
-          -webkit-transform: rotate(-45deg);
-          /* shadow */
-          box-shadow: 0 0 4px #272625;
-          -moz-box-shadow: 0 0 4px #272625;
-          -webkit-box-shadow: 0 0 4px #272625;
-        }
-        .ribbon a {
-          border: 1px solid #faa;
-          color: #fff;
-          display: block;
-          font: bold 81.25% 'Helvetiva Neue', Helvetica, Arial, sans-serif;
-          margin: 0.05em 0 0.075em 0;
-          padding: 0.5em 3.5em;
-          text-align: center;
-          text-decoration: none;
-          /* shadow */
-          text-shadow: 0 0 0.5em #444;
-        }
-        
-        
         /* Styles */
         
         /*
@@ -179,13 +149,15 @@
         /* general styles */
         body {font-family:'Helvetica', 'Arial', sans-serif;font-size: 16px;text-shadow: 0px 1px 1px #221E1C;color:#405926;background-color:#302D2C;}
         h1, h2, h3, h4 {font-family:'Anton',arial,serif;}
-        h1 {font-size:44px;color:#354C29;text-shadow:0px 1px 1px #221E1C;margin-bottom:20px;text-transform:uppercase;}
+        h1 {font-size:44px;color:#354C29;margin-bottom:20px;text-transform:uppercase;text-shadow:none;}
         
         .wrapper {width:690px;margin:0 auto;padding:20px 0 20px 0;}
         
         /* header styles */
         header {background-color:#E67F17;}
         	header .teaser {width:420px;}
+        		header .teaser a {color:#277185;text-decoration:none;}
+        		header .teaser a:hover {color:#4A90A4;}
         	header .teaserimg {}
         
         /* navigation styles */
@@ -341,9 +313,7 @@
 </head>
 <body>
     <!-- Github ribbon -->
-    <div class="ribbon">
-        <a href="https://github.com/ranzwertig/web-testsuite-backend" rel="me">Backend on GitHub</a>
-    </div>
+    <a href="http://github.com/ranzwertig"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
     
     <!-- Status message for off/online signal -->
     <div id="socketstate" class="off">
@@ -358,10 +328,10 @@
             <div class="fl teaser">
                 <h1>WebTestsuite Stats</h1>
                 <p class="teaser"> 
-                    The most significant numbers of the WebTestsuite summarized on a single page.
+                    The most significant numbers of the <a href="http://github.com/vf/web-testsuite">web-testsuite</a> summarized on a single page.
                 </p>
                 <p class="description">
-                    SimpleStats is a small an lightweight statistics module running on the web-testsuite-backend.
+                    SimpleStats is a small an lightweight statistics module running on the <a href="http://github.com/ranzwertig/web-testsuite-backend">web-testsuite-backend</a>.
                 </p>
             </div>
             <div class="fr teaserimg">
