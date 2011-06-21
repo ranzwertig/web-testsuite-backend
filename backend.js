@@ -35,7 +35,7 @@ var backend = new server.HttpServer(config.httpSettings);
  * recieve messages and events.
  */
 var Messenger = function(){};
-util.inherits(messenger, events.EventEmitter);
+util.inherits(Messenger, events.EventEmitter);
 var moduleMessenger = new Messenger();
 
 //  load all enabled modules
