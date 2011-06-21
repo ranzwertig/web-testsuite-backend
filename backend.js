@@ -34,7 +34,7 @@ var backend = new server.HttpServer(config.httpSettings);
  * using events. A module can listen on the Messenger to
  * recieve messages and events.
  */
-var Messenger = function(){};
+var Messenger = function(){ this.type = 'messenger'; };
 util.inherits(Messenger, events.EventEmitter);
 var moduleMessenger = new Messenger();
 
@@ -45,6 +45,7 @@ for(var i = 0; i < config.modulesEnabled.length; i +=1){
     var mod = require('./modules/'+config.modulesEnabled[i]);
     // pass the moduleMessenger to the module if it supports it
     if(typeof mod.init === 'function'){
+    	consile.log('mod init');
     	mod.init({
     		messenger: moduleMessenger
     	});
