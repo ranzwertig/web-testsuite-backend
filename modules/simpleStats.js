@@ -12,7 +12,7 @@ var config = {
     cronCycle: 10,
     
     // realtime updates using socket.io
-    realtime: false
+    realtime: true
 };
 // config section end
  
@@ -23,33 +23,6 @@ var url = require('url'),
     util = require('util'),
     sio = require('socket.io');
     
-// init function called by the loader
-var modulMessenger = {};
-var socket;
-exports.init = function(settings){
-	console.log('init simpleSatts');
-	if(typeof settings.messenger !== 'undefined'){
-		modulMessenger = settings.messenger;
-		// listen for jsonresult event and add stats
-		modulMessenger.on('jsonresult',function(result){
-			console.log('got a realtimeresult');
-			if(typeof socket !== 'undefined'){
-				socket.broadcast(result);
-			}
-		});
-		
-		modulMessenger.on('serverstarted',function(backend){
-			socket = sio.listen(backend.server);
-			socket.on('connection', function(client){
-				client.on('message', function(data){
- 			 	});
- 			 	client.on('disconnect', function(data){
- 			 	});
-			});
-		});
-	}
-}
-
 // cache for stats
 var cache = JSON.stringify({
     status: 204,
@@ -72,6 +45,37 @@ var cache = JSON.stringify({
     browserranking: {},
     useragents: {}
 });
+    
+// init function called by the loader
+var modulMessenger = {};
+var socket;
+exports.init = function(settings){
+	console.log('init simpleSatts');
+	if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+		// listen for jsonresult event and add stats
+		modulMessenger.on('jsonresult',function(result){
+			// if realtime is enabled broadcast cache
+			if(typeof socket !== 'undefined' && config.realtime === true){
+				socket.broadcast(cache);
+			}
+		});
+		
+		// listen on the event for started server
+		modulMessenger.on('serverstarted',function(backend){
+			// open the socket if the realtime feature is enabled
+			if(config.realtime === true){
+				socket = sio.listen(backend.server);
+				socket.on('connection', function(client){
+					client.on('message', function(data){
+ 				 	});
+ 				 	client.on('disconnect', function(data){
+ 				 	});
+				});
+			}
+		});
+	}
+}
 
 // generate stats every x seconds
 var processFileResults = function(){
