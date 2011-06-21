@@ -1,5 +1,5 @@
 var UserAgentParser = {
-    
+	
 	// Lot of info about the user agent:
 	// 		http://www-archive.mozilla.org/build/revised-user-agent-strings.html
 	
@@ -183,10 +183,8 @@ var UserAgentParser = {
         //      Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:2.0b10) Gecko/20110126 Firefox/4.0b10
         //      Mozilla/5.0 (X11; U; FreeBSD i386; en-US; rv:1.9.2.9) Gecko/20100913 Firefox/3.6.9
         //      Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8
-        //      Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8
         //      Mozilla/5.0 (X11; U; OpenBSD i386; en-US; rv:1.9.2.8) Gecko/20101230 Firefox/3.6.8
         //      Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2a1pre) Gecko/20090428 Firefox/3.6a1pre
-        //      Mozilla/5.0 (Windows NT 5.2; rv:2.0b13pre) Gecko/20110304 Firefox/4.0b13pre
         else if (/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Firefox)\/([^\s]+)$/);
             
@@ -261,6 +259,7 @@ var UserAgentParser = {
         // Android Safari
         //      Mozilla/5.0 (Linux; U; Android 2.3.4; de-de; Nexus One Build/GRJ22) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
         //      Mozilla/5.0 (Linux; U; Android 2.3.3; de-de; HTC_WildfireS_A510e Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+        //      Mozilla/5.0 (BlackBerry; U; BlackBerry 9800; en-US) AppleWebKit/534.1+ (KHTML, like Gecko) Version/6.0.0.185 Mobile Safari/534.1+
 		else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/);
             
@@ -277,6 +276,16 @@ var UserAgentParser = {
                 locale = osMatch[4].trim();
                 security = osMatch[2].trim();
             } 
+            // BlackBerry
+            //      (BlackBerry; U; BlackBerry 9800; en-US)
+            else if(/(BlackBerry); ([^;]+); (BlackBerry[^;]+); ([^;]+)$/.test(match[3])){
+                var osMatch = match[3].match(/(BlackBerry); ([^;]+); (BlackBerry[^;]+); ([^;]+)$/);
+                hardware.name = osMatch[1].trim();
+                os.name = osMatch[3].trim();
+                locale = osMatch[4].trim();
+                security = osMatch[2].trim();
+            }
+            
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -294,8 +303,9 @@ var UserAgentParser = {
                 }
             };
         }
-        // RIM Playbook Safari
+        // Tablet Safari
         //      Mozilla/5.0 (PlayBook; U; RIM Tablet OS 1.0.0; en-US) AppleWebKit/534.8+ (KHTML, like Gecko) Version/0.0.1 Safari/534.8+
+        //      Mozilla/5.0 (Linux; U; Android 3.1; en-us; GT-P7510 Build/HMJ37) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13
     	else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Safari)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Safari)\/([^\s]+)$/);
             var hardware = {},
@@ -311,6 +321,15 @@ var UserAgentParser = {
                 locale = osMatch[4].trim();
                 security = osMatch[2].trim();
             } 
+            // Android    
+            //      (Linux; U; Android 3.1; en-us; GT-P7510 Build/HMJ37)
+            if(/(Linux); ([^;]+); (Android [^;]+); ([^;]+); ([^;]+)$/.test(match[3])){
+                var osMatch = match[3].match(/(Linux); ([^;]+); (Android [^;]+); ([^;]+); ([^;]+)$/);
+                hardware.name = osMatch[5].trim();
+                os.name = osMatch[3].trim();
+                locale = osMatch[4].trim();
+                security = osMatch[2].trim();
+            }
             var ret = {
                     hardware: hardware,
                 os: os,
