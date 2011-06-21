@@ -78,7 +78,7 @@ exports.init = function(settings){
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
 			// process the realtime result
-			processRealtimeResult();
+			processRealtimeResult(result);
 			// if realtime is enabled broadcast cache
 			if(typeof socket !== 'undefined' && config.realtime === true){
 				socket.broadcast(cache);
