@@ -138,7 +138,7 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		logger.error('error processing realtime result', MODULENAME);
+		logger.warning('error processing realtime result', MODULENAME);
 	}
 };
     
@@ -162,6 +162,7 @@ exports.init = function(settings){
 		modulMessenger = settings.messenger;
 		// listen for jsonresult event and add stats
 		modulMessenger.on('jsonresult',function(result){
+			logger.log('got a jsonresult', MODULENAME);
 			// process the realtime result
 			processRealtimeResult(result);
 			// if realtime is enabled broadcast cache
@@ -183,6 +184,7 @@ exports.init = function(settings){
 				});
 			}
 		});
+		logger.system('modul messenger initialised', MODULENAME);
 	}
 };
 
@@ -253,6 +255,7 @@ var processFileResults = function(){
                             parserFail.push(uaString);
                             useragentParserFails += 1;
                         }
+                        logger.warning('UserAgentParser error for: '+uaString, MODULENAME);
                     }    
                     else {
                     	// useragent list
@@ -323,11 +326,12 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
-                    logger.error('error reading file', MODULENAME);
+                    logger.warning('error reading file', MODULENAME);
                     barrier.commit();
                 }
             };
             
+            logger.system('start processing files in '+config.outputPath, MODULENAME);
             for(var i = 0; i < files.length; i += 1){
                 var file = files[i];
                 fs.readFile(config.outputPath+'/'+file, processFile);
@@ -361,13 +365,16 @@ var processFileResults = function(){
 // set cron to update the files when realtime feature is disabled
 if(config.cronCycle > 0 && config.realtime == false){
 	setInterval(processFileResults, config.cronCycle * 1000);
+	logger.system('cron is running every '+config.cronCycle+' seconds', MODULENAME);
 }
 else{
+	logger.system('processing files once after startup', MODULENAME);
 	processFileResults();
 }
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
+    logger.log('REQUEST/GET/: '+reqUrl.pathname+, MODULENAME);
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
     	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     	// send stats from cache to client
