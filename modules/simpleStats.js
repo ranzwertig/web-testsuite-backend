@@ -319,7 +319,7 @@ var processFileResults = function(){
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
-    logger.log('REQUEST/GET/: '+reqUrl.pathname, MODULENAME);
+    logger.log('REQUEST/GET '+reqUrl.pathname, MODULENAME);
     if(reqUrl.pathname === '/simplestats/data' || reqUrl.pathname === '/simplestats/data/'){
     	res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
     	// send stats from cache to client
