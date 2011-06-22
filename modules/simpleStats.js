@@ -141,52 +141,6 @@ var processRealtimeResult = function(test){
 		logger.warning('error processing realtime result', MODULENAME);
 	}
 };
-    
-// init function called by the loader
-var socket;
-exports.init = function(settings){
-    // get the logger from the server
-    if(typeof settings.logger !== 'undefined'){
-        logger = settings.logger;
-    }
-    else{
-        // else init own logger
-        var Logger = require('../lib/logger').Logger;
-        logger = new Logger({
-            level: 0,
-            module: MODULENAME
-        });
-    }
-    
-	if(typeof settings.messenger !== 'undefined'){
-		modulMessenger = settings.messenger;
-		// listen for jsonresult event and add stats
-		modulMessenger.on('jsonresult',function(result){
-			logger.log('got a jsonresult', MODULENAME);
-			// process the realtime result
-			processRealtimeResult(result);
-			// if realtime is enabled broadcast cache
-			if(typeof socket !== 'undefined' && config.realtime === true){
-				socket.broadcast(cache);
-			}
-		});
-		
-		// listen on the event for started server
-		modulMessenger.on('serverstarted',function(backend){
-			// open the socket if the realtime feature is enabled
-			if(config.realtime === true){
-				socket = sio.listen(backend.server);
-				socket.on('connection', function(client){
-					client.on('message', function(data){
- 				 	});
- 				 	client.on('disconnect', function(data){
- 				 	});
-				});
-			}
-		});
-		logger.system('modul messenger initialised', MODULENAME);
-	}
-};
 
 // generate stats every x seconds
 var processFileResults = function(){
@@ -362,15 +316,6 @@ var processFileResults = function(){
         }  
     });   
 };
-// set cron to update the files when realtime feature is disabled
-if(config.cronCycle > 0 && config.realtime == false){
-	setInterval(processFileResults, config.cronCycle * 1000);
-	logger.system('cron is running every '+config.cronCycle+' seconds', MODULENAME);
-}
-else{
-	logger.system('processing files once after startup', MODULENAME);
-	processFileResults();
-}
  
 exports.onget = function(req, res){
     var reqUrl = url.parse(req.url, true);
@@ -398,4 +343,59 @@ exports.onget = function(req, res){
         res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
         res.end();
     }
+};
+
+// init function called by the loader
+var socket;
+exports.init = function(settings){
+    // get the logger from the server
+    if(typeof settings.logger !== 'undefined'){
+        logger = settings.logger;
+    }
+    else{
+        // else init own logger
+        var Logger = require('../lib/logger').Logger;
+        logger = new Logger({
+            level: 0,
+            module: MODULENAME
+        });
+    }
+    // set cron to update the files when realtime feature is disabled
+	if(config.cronCycle > 0 && config.realtime == false){
+		setInterval(processFileResults, config.cronCycle * 1000);
+		logger.system('cron is running every '+config.cronCycle+' seconds', MODULENAME);
+	}
+	else{
+		logger.system('processing files once after startup', MODULENAME);
+		processFileResults();
+	}
+    
+	if(typeof settings.messenger !== 'undefined'){
+		modulMessenger = settings.messenger;
+		// listen for jsonresult event and add stats
+		modulMessenger.on('jsonresult',function(result){
+			logger.log('got a jsonresult', MODULENAME);
+			// process the realtime result
+			processRealtimeResult(result);
+			// if realtime is enabled broadcast cache
+			if(typeof socket !== 'undefined' && config.realtime === true){
+				socket.broadcast(cache);
+			}
+		});
+		
+		// listen on the event for started server
+		modulMessenger.on('serverstarted',function(backend){
+			// open the socket if the realtime feature is enabled
+			if(config.realtime === true){
+				socket = sio.listen(backend.server);
+				socket.on('connection', function(client){
+					client.on('message', function(data){
+ 				 	});
+ 				 	client.on('disconnect', function(data){
+ 				 	});
+				});
+			}
+		});
+		logger.system('modul messenger initialised', MODULENAME);
+	}
 };
