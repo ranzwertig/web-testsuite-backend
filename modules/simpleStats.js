@@ -30,6 +30,7 @@ var url = require('url'),
     
 var modulMessenger = {};
 var logger = {};
+var MODULENAME = 'SimpleStats'; 
     
 // cache for stats
 var cache = {
@@ -137,7 +138,7 @@ var processRealtimeResult = function(test){
             cache.totaltests = cache.succeededtests+cache.failedtests+cache.notapptests+cache.errortests;
         }
 	}catch(error){
-		logger.error('simplestats: error processing realtime result');
+		logger.error('error processing realtime result', MODULENAME);
 	}
 };
     
@@ -152,7 +153,8 @@ exports.init = function(settings){
         // else init own logger
         var Logger = require('../lib/logger').Logger;
         logger = new Logger({
-            level: 0    
+            level: 0,
+            module: MODULENAME
         });
     }
     
@@ -233,7 +235,7 @@ var processFileResults = function(){
             var processFile = function (err, data) {
                 if(err){
                     barrier.commit();
-                    logger.error('simplestats: error reading file '+err.description);
+                    logger.error('error reading file', MODULENAME);
                 }
             	
                 try{
@@ -321,7 +323,7 @@ var processFileResults = function(){
                     barrier.commit();
                 }catch(error){
                 	// error processing file
-                    logger.error('simplestats: error reading file');
+                    logger.error('error reading file', MODULENAME);
                     barrier.commit();
                 }
             };
