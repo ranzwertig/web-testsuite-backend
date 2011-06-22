@@ -38,7 +38,7 @@ var moduleMessenger = new Messenger();
 
 // init logger
 var moduleLogger = new Logger({
-    level: 0    
+    level: 1  
 });
 
 //  load all enabled modules
