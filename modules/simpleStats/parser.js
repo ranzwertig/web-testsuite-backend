@@ -1,5 +1,5 @@
 var UserAgentParser = {
-	
+    
 	// Lot of info about the user agent:
 	// 		http://www-archive.mozilla.org/build/revised-user-agent-strings.html
 	
@@ -251,7 +251,7 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[11].trim(), //    Safari        Opera
-                    version: match[12].trim(), // 5.0.3       11.0
+                    version: match[8].trim(), // 5.0.3       11.0
                     raw: {}
                 }
             };
@@ -262,7 +262,6 @@ var UserAgentParser = {
         //      Mozilla/5.0 (BlackBerry; U; BlackBerry 9800; en-US) AppleWebKit/534.1+ (KHTML, like Gecko) Version/6.0.0.185 Mobile Safari/534.1+
 		else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (AppleWebKit)\/([^\s]+) \(([^)]+)\) (Version)\/([^\s]+) (Mobile) (Safari)\/([^\s]+)$/);
-            
             var hardware = {},
                 os = {},
                 locale = ""
@@ -298,7 +297,7 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[10].trim(), //    Safari        Opera
-                    version: match[11].trim(), // 5.0.3       11.0
+                    version: match[8].trim(), // 5.0.3       11.0
                     raw: {}
                 }
             };
@@ -342,7 +341,7 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[9].trim(), //    Safari        Opera
-                    version: match[10].trim(), // 5.0.3       11.0
+                    version: match[8].trim(), // 5.0.3       11.0
                     raw: {}
                 }
             };
@@ -351,6 +350,7 @@ var UserAgentParser = {
         //      Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en; rv:1.9.0.19) Gecko/2011032020 Camino/2.0.7 (like Firefox/3.0.19)
         else if(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/.test(ua)){
             var match = ua.match(/(Mozilla)\/(\d+\.\d+) \(([^)]+)\) (Gecko)\/([^\s]+) (Camino)\/([^\s]+) \(([^)]+)\)$/);
+            console.log(match);
             var hardware = {},
                 os = {},
                 locale = ""
