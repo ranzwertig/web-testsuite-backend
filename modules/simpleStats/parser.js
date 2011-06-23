@@ -21,8 +21,11 @@ var UserAgentParser = {
 			raw: {} // {Presto:"2.4.15", Version:"10.00"}
 		},
 		browser:{
-			name: "", // 	Safari		Opera
-			version: "", //	5.0.3 		11.0
+			name: "", //        Sfari		Opera
+			version: "", //	5  5.0.3 		11.0
+            minor_version: "",
+            major_version: "",
+            build: "",
 			raw: {}
 		}
 	},
@@ -157,6 +160,9 @@ var UserAgentParser = {
                 //hardware.name = osMatch[2].trim();
                 //hardware.platform = osMatch[1].trim();
             }
+            
+            var v = this._parseVersionNumber(match[8].trim());
+            
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -169,7 +175,9 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[7].trim(), //    Safari		Opera
-                    version: match[8].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
                     raw: {}
                 }
             };
@@ -193,6 +201,8 @@ var UserAgentParser = {
             
             // TODO: device and os parser
             
+            var v = this._parseVersionNumber(match[7].trim());
+            
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -205,7 +215,9 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[6].trim(), //    Safari    	Opera
-                    version: match[7].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
                     raw: {}
                 }
             };
@@ -239,6 +251,8 @@ var UserAgentParser = {
                 security = osMatch[2].trim();
             }
                 
+            var v = this._parseVersionNumber(match[8].trim());
+                
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -251,7 +265,10 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[11].trim(), //    Safari        Opera
-                    version: match[8].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
+                    build: match[12].trim(),
                     raw: {}
                 }
             };
@@ -285,6 +302,8 @@ var UserAgentParser = {
                 security = osMatch[2].trim();
             }
             
+            var v = this._parseVersionNumber(match[8].trim());
+            
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -297,7 +316,10 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[10].trim(), //    Safari        Opera
-                    version: match[8].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
+                    build: match[11].trim(),
                     raw: {}
                 }
             };
@@ -329,6 +351,9 @@ var UserAgentParser = {
                 locale = osMatch[4].trim();
                 security = osMatch[2].trim();
             }
+            
+            var v = this._parseVersionNumber(match[8].trim());
+            
             var ret = {
                     hardware: hardware,
                 os: os,
@@ -341,7 +366,10 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[9].trim(), //    Safari        Opera
-                    version: match[8].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
+                    build: match[10].trim(),
                     raw: {}
                 }
             };
@@ -355,6 +383,8 @@ var UserAgentParser = {
                 os = {},
                 locale = ""
                 security = "";
+                
+            var v = this._parseVersionNumber(match[7].trim());
 
             var ret = {
                     hardware: hardware,
@@ -368,7 +398,9 @@ var UserAgentParser = {
                     },
                 browser:{
                     name: match[6].trim(), //    Safari        Opera
-                    version: match[7].trim(), // 5.0.3       11.0
+                    version: v.version,
+                    minor_version: v.minor_version,
+                    major_version: v.major_version,
                     raw: {}
                 }
             };
@@ -386,6 +418,15 @@ var UserAgentParser = {
 		}
 		return ret;
 	},
+    
+    _parseVersionNumber:function(v){
+        var parts = v.match(/((\d+)\.?(\d*))(.*)/);
+        return { 
+            major_version: parts[2],
+            minor_version: parts[1],
+            version: v
+        };
+    },
 };
 
 /*
