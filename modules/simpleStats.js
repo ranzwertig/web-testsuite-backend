@@ -54,6 +54,8 @@ var cache = {
     browserranking: {},
     useragents: {}
 };
+
+var fileStaticCache = {};
   
 // process realtime results to stats
 var processRealtimeResult = function(test){
@@ -328,16 +330,22 @@ exports.onget = function(req, res){
     }
     // output the simpleStats html
     else if(reqUrl.pathname === '/simplestats' || reqUrl.pathname === '/simplestats/'){
-        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*'});
-        var readStream = fs.createReadStream('./modules/simpleStats/simpleStats.html');
-        util.pump(readStream, res, function(){
-            res.writeHead(500);    
+        res.writeHead(200, {'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*','Cache-Control': 'max-age'});
+        if(typeof fileStaticCache['simpleStats:html'] === 'undefined'){
+            var readStream = fs.createReadStream('./modules/simpleStats/simpleStats.html');
+            util.pump(readStream, res, function(){
+                res.writeHead(500);    
+                res.end();
+                return;
+            });
+            readStream.on('end', function(){
+                res.end();
+            });
+        }
+        else{
+            res.write(fileStaticCache['simpleStats:html']);
             res.end();
-            return;
-        });
-        readStream.on('end', function(){
-            res.end();
-        });
+        }
     }
     else{
         res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
@@ -348,6 +356,14 @@ exports.onget = function(req, res){
 // init function called by the loader
 var socket;
 exports.init = function(settings){
+    // init the file static cache
+    fs.readFile('',function(err, data){
+        if(!err){
+            fileStaticCache['simpleStats:html'] = data;
+        }
+    });
+    
+    
     // get the logger from the server
     if(typeof settings.logger !== 'undefined'){
         logger = settings.logger;
