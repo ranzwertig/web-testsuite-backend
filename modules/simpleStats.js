@@ -357,7 +357,7 @@ exports.onget = function(req, res){
 var socket;
 exports.init = function(settings){
     // init the file static cache
-    fs.readFile('',function(err, data){
+    fs.readFile('./modules/simpleStats/simpleStats.html',function(err, data){
         if(!err){
             fileStaticCache['simpleStats:html'] = data;
         }
